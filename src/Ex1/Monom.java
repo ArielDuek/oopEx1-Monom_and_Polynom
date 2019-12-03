@@ -61,13 +61,13 @@ public class Monom<STRBKJ> implements function {
 		return ans;
 	}
 
-	//the new f
+//	//the new f
 //	public double f(double x) {
 //		double ans = 0;
-//		double p = this.get_power();
-//		BigDecimal d = BigDecimal.valueOf(this.get_coefficient());
-//		BigDecimal pow = BigDecimal.valueOf(Math.pow(x,p));
-//		ans = d.multiply(pow).doubleValue();
+//		int power=this.get_power();
+//		BigDecimal newX=BigDecimal.valueOf(x);
+//		BigDecimal coefficient=BigDecimal.valueOf(this.get_coefficient());
+//		ans=coefficient.multiply(newX.pow(power)).doubleValue();
 //		return ans;
 //	}
 
@@ -196,14 +196,14 @@ public class Monom<STRBKJ> implements function {
 	//****************** Private Methods and Data *****************
 
 	//the new set coefficient
-	private void set_coefficient ( double a){
-		BigDecimal newCo=BigDecimal.valueOf(a);
-		this._coefficient = newCo.doubleValue();
-	}
-//the old set coefficient
 //	private void set_coefficient ( double a){
-//		this._coefficient = a;
+//		BigDecimal newCo=BigDecimal.valueOf(a);
+//		this._coefficient = newCo.doubleValue();
 //	}
+//the old set coefficient
+	private void set_coefficient ( double a){
+		this._coefficient = a;
+	}
 
 	private void set_isValidMonom ( boolean a){
 		this.isValidMonom = a;
