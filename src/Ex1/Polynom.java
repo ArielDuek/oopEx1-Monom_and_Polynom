@@ -160,6 +160,11 @@ public class Polynom implements Polynom_able{
         return ans;
     }
 
+    @Override
+    public function initFromString(String s) {
+        return null;
+    }
+
     /**
      * @param x The X value at the point
      * @return double Which symbolizes the Y value
@@ -198,7 +203,7 @@ public class Polynom implements Polynom_able{
      */
     @Override
     public void substract(Polynom_able p1) {
-        Polynom_able toSub = p1.copy();
+        Polynom_able toSub = (Polynom_able) p1.copy();
         toSub.multiply(Monom.MINUS1);
         this.add(toSub);
         this.makeOrder();
@@ -235,17 +240,22 @@ public class Polynom implements Polynom_able{
      * This is how all monomes are checked, if all are equal return true.
      */
     @Override
-    public boolean equals(Polynom_able p1) {
-        boolean isEquals = true;
-        Iterator<Monom> iter1 = this.iteretor();
-        Iterator<Monom> iter2 = p1.iteretor();
-        while (iter1.hasNext() && iter2.hasNext())
+    public boolean equals(Object p1) {
+        if(p1 instanceof Polynom)
         {
-            Monom m = iter1.next();
-            Monom n = iter2.next();
-            if (!m.equals(n)) isEquals = false;
+            Polynom p2=(Polynom)p1;
+            boolean isEquals = true;
+            Iterator<Monom> iter1 = this.iteretor();
+            Iterator<Monom> iter2 = p2.iteretor();
+            while (iter1.hasNext() && iter2.hasNext()) {
+                Monom m = iter1.next();
+                Monom n = iter2.next();
+                if (!m.equals(n)) isEquals = false;
+            }
+            return isEquals;
         }
-        return isEquals;
+
+        return false;
     }
 
     /**

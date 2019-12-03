@@ -174,7 +174,17 @@ public class Monom<STRBKJ> implements function {
         return ans.toString();
     }
 
-	/**
+    @Override
+    public function initFromString(String s) {
+        return null;
+    }
+
+    @Override
+    public function copy() {
+        return null;
+    }
+
+    /**
 	 * @param m Monom for comparison
 	 * @return An boolean expression that signifies whether the monomies are equal or not
 	 * The function checks whether the two monomies are equal in deflection of Epsilon
