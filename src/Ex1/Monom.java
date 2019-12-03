@@ -1,4 +1,5 @@
 package Ex1;
+import java.math.BigDecimal;
 import java.util.Comparator;
 
 /**
@@ -52,13 +53,23 @@ public class Monom<STRBKJ> implements function {
 		}
 		return new Monom(this.get_coefficient() * this.get_power(), this.get_power() - 1);
 	}
-
+//the old f
 	public double f(double x) {
 		double ans = 0;
 		double p = this.get_power();
 		ans = this.get_coefficient() * Math.pow(x, p);
 		return ans;
 	}
+
+	//the new f
+//	public double f(double x) {
+//		double ans = 0;
+//		double p = this.get_power();
+//		BigDecimal d = BigDecimal.valueOf(this.get_coefficient());
+//		BigDecimal pow = BigDecimal.valueOf(Math.pow(x,p));
+//		ans = d.multiply(pow).doubleValue();
+//		return ans;
+//	}
 
 	public boolean isZero() {
 		return this.get_coefficient() == 0;
@@ -154,33 +165,45 @@ public class Monom<STRBKJ> implements function {
      * @return  String Which symbolizes the monom
      * Prints monom as follows: ax^b
      */
-	public String toString()
-	{
-		String ans= "";
-		ans += Double.toString(this.get_coefficient()) ;
-		if (this.get_power()==1) ans+="x";
-		else if (this.get_power()!=0) ans+="x^" + Integer.toString(this.get_power());
-		return ans;
-	}
+    public String toString()
+    {
+        StringBuilder ans= new StringBuilder("");
+        ans.append(Double.toString(this.get_coefficient()));
+        if (this.get_power()==1) ans.append('x');
+        else if (this.get_power()!=0) ans.append("x^" + Integer.toString(this.get_power()));
+        return ans.toString();
+    }
 
 	/**
 	 * @param m Monom for comparison
 	 * @return An boolean expression that signifies whether the monomies are equal or not
 	 * The function checks whether the two monomies are equal in deflection of Epsilon
 	 */
-    public boolean equals (Monom m) {
-        double dc = this.get_coefficient() - m.get_coefficient();
-        if ( Math.abs(dc) < EPSILON && this.get_power() == m.get_power()) return true;
-        return false;
+
+    public boolean equals (Object m) {
+    	if(m instanceof Monom)
+    	{
+
+			double dc = this.get_coefficient() -((Monom) m).get_coefficient();
+			if (Math.abs(dc) < EPSILON && this.get_power() == ((Monom) m).get_power()) return true;
+			   return false;
+		}
+
+    	return false;
     }
 
 
 	//****************** Private Methods and Data *****************
 
-
+	//the new set coefficient
 	private void set_coefficient ( double a){
-		this._coefficient = a;
+		BigDecimal newCo=BigDecimal.valueOf(a);
+		this._coefficient = newCo.doubleValue();
 	}
+//the old set coefficient
+//	private void set_coefficient ( double a){
+//		this._coefficient = a;
+//	}
 
 	private void set_isValidMonom ( boolean a){
 		this.isValidMonom = a;
