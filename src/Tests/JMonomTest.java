@@ -1,8 +1,11 @@
 package Tests;
 
 import Ex1.Monom;
+import Ex1.function;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.function.Function;
 
 import static org.junit.Assert.*;
 
@@ -111,11 +114,11 @@ public class JMonomTest {
         /*Checks whether the get_coefficient returns the correct coefficient from the constructor
          that accepts a string*/
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertEquals(expected[i],arrMonomsFromString[i].get_coefficient(),0.0);
+            assertEquals(expected[i],arrMonomsFromString[i].get_coefficient(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertNotEquals(100.0,arrMonomsFromString[i].get_coefficient(),0.0);
+            assertNotEquals(100.0,arrMonomsFromString[i].get_coefficient(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
@@ -125,11 +128,11 @@ public class JMonomTest {
         /*Checks whether the get_coefficient returns the correct coefficient from the constructor
          that accepts a parameters*/
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
-            assertEquals(expected[i],arrMonomsFromConstructorMonom[i].get_coefficient(),0.0);
+            assertEquals(expected[i],arrMonomsFromConstructorMonom[i].get_coefficient(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
-            assertNotEquals(100.0,arrMonomsFromConstructorMonom[i].get_coefficient(),0.0);
+            assertNotEquals(100.0,arrMonomsFromConstructorMonom[i].get_coefficient(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
@@ -148,11 +151,11 @@ public class JMonomTest {
        /*Checks whether the get_power() returns the correct power from the constructor
          that accepts a String*/
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertEquals(expected[i],arrMonomsFromString[i].get_power(),0.0);
+            assertEquals(expected[i],arrMonomsFromString[i].get_power(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertNotEquals(100.0,arrMonomsFromString[i].get_power(),0.0);
+            assertNotEquals(100.0,arrMonomsFromString[i].get_power(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
@@ -162,11 +165,11 @@ public class JMonomTest {
         /*Checks whether the get_power() returns the correct power from the constructor
          that accepts a parameters*/
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
-            assertEquals(expected[i],arrMonomsFromConstructorMonom[i].get_power(),0.0);
+            assertEquals(expected[i],arrMonomsFromConstructorMonom[i].get_power(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
-            assertNotEquals(100.0,arrMonomsFromConstructorMonom[i].get_power(),0.0);
+            assertNotEquals(100.0,arrMonomsFromConstructorMonom[i].get_power(),Monom.EPSILON);
         }
 
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
@@ -259,7 +262,7 @@ public class JMonomTest {
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
             assertEquals(expectedForMinus5_55[i],arrMonomsFromString[i].f(-5.55),0.01);
         }
-        
+
     }
 
     /**
@@ -449,4 +452,59 @@ public class JMonomTest {
             assertFalse(arrMonomsFromString[i].equals(notEqual));
         }
     }
+
+    /**
+     * Checks whether the copy function properly Copying monom to function
+     */
+    @Test
+    public void copy() {
+        /*
+        Creating an array how is a copy of monoms that created from a string, this array is an array of objects type function
+         */
+        function [] arrf=new function[15];
+        for (int i = 0; i <arrMonomsFromString.length ; i++) {
+            arrf[i]=(arrMonomsFromString[i].copy());
+        }
+
+        /*
+        Checks whether each cell in the array is a function instance
+        Checks whether the coefficient of each function is equal to the coefficient of the monom from which it was copied.
+        Checks whether the power of each function equals the power of the monom from which it was copied.
+         */
+        for (int i = 0; i <arrMonomsFromString.length ; i++) {
+            assertTrue(arrf[i] instanceof function);
+            assertTrue(arrf[i] instanceof Monom);
+            assertEquals(arrMonomsFromString[i].get_coefficient(),((Monom)arrf[i]).get_coefficient(),Monom.EPSILON);
+            assertEquals(arrMonomsFromString[i].get_power(),((Monom)arrf[i]).get_power(),Monom.EPSILON);
+        }
+
+    }
+
+    @Test
+    public void initFromString() {
+        String[] s={"0.0","15.0","15.5","1.0x","-1.0x","1.0x","4.5x","2.5x","-4.5x","-2.5x","2.0x^2","6.7x^5","-9.0x^7","8.0x^7","0.0X^90"};
+        /*
+        Creating an function array from the array of the strings
+         */
+        function [] arrf=new function[15];
+        for (int i = 0; i <s.length ; i++) {
+            arrf[i]=(arrMonomsFromString[i].initFromString(s[i]));
+        }
+
+        /*
+        Checks whether each cell in the array is a function instance.
+        Checks whether the coefficient of each function is equal to the coefficient of the monom,
+        Because the string arry is the same as the monom values
+        Checks whether the power of each function equals the power of the monom,
+        Because the string arry is the same as the monom values
+         */
+        for (int i = 0; i <arrMonomsFromString.length ; i++) {
+            assertTrue(arrf[i] instanceof function);
+            assertTrue(arrf[i] instanceof Monom);
+            assertEquals(arrMonomsFromString[i].get_coefficient(),((Monom)arrf[i]).get_coefficient(),Monom.EPSILON);
+            assertEquals(arrMonomsFromString[i].get_power(),((Monom)arrf[i]).get_power(),Monom.EPSILON);
+        }
+
+    }
+
 }

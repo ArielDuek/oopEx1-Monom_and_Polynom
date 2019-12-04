@@ -133,12 +133,17 @@ public class Polynom implements Polynom_able{
      *Deep copy of Polynom_able
      */
     @Override
-    public Polynom_able copy() {
-        Polynom_able toCopy=new Polynom();
+    public function copy() {
+
+        function toCopy=new Polynom();
         Iterator<Monom> x = this.iteretor();
-        while(x.hasNext()){
+        while(x.hasNext())
+        {
             Monom temp = x.next();
-            toCopy.add(new Monom(temp));
+            if(toCopy instanceof Polynom_able )
+            {
+                ((Polynom_able)toCopy).add(new Monom(temp));
+            }
         }
         return toCopy;
     }
@@ -162,7 +167,8 @@ public class Polynom implements Polynom_able{
 
     @Override
     public function initFromString(String s) {
-        return null;
+        function init=new Polynom(s);
+        return init;
     }
 
     /**

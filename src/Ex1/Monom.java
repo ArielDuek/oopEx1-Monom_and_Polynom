@@ -174,14 +174,24 @@ public class Monom<STRBKJ> implements function {
         return ans.toString();
     }
 
+	/**
+	 * @param s String that will become a object type function
+	 * @return function type Monom
+	 */
     @Override
     public function initFromString(String s) {
-        return null;
+         function init=new Monom(s);
+         return init;
     }
 
+	/**
+	 * Copies a monum to a type object function
+	 * @return function type Monom
+	 */
     @Override
     public function copy() {
-        return null;
+        function copyMonom=new Monom(this.get_coefficient(),this.get_power());
+        return copyMonom;
     }
 
     /**
