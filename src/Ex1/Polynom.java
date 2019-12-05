@@ -247,7 +247,12 @@ public class Polynom implements Polynom_able{
      */
     @Override
     public boolean equals(Object p1) {
-        if(p1 instanceof Polynom)
+        if(p1 instanceof Monom){
+            Polynom p2 = new Polynom();
+            p2.add((Monom) p1);
+            return this.equals(p2);
+        }
+        else if(p1 instanceof Polynom)
         {
             Polynom p2=(Polynom)p1;
             boolean isEquals = true;
@@ -258,9 +263,9 @@ public class Polynom implements Polynom_able{
                 Monom n = iter2.next();
                 if (!m.equals(n)) isEquals = false;
             }
+            if(iter1.hasNext()||iter2.hasNext()) isEquals = false;
             return isEquals;
         }
-
         return false;
     }
 
@@ -340,7 +345,7 @@ public class Polynom implements Polynom_able{
      */
     @Override
     public double area(double x0, double x1, double eps) {
-        if (eps<0) throw new RuntimeException("eps need to be positive");
+        if (eps<0) throw new RuntimeException ("eps need to be positive");
         double area = 0 , x0eps = x0 + eps;
         if (x0>=x1){
             return 0;
