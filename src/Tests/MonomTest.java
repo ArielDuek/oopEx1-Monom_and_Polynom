@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 import static org.junit.Assert.*;
 
-public class JMonomTest {
+public class MonomTest {
 
     static  Monom [] arrMonomsFromString =new Monom[15];
     static  Monom [] arrMonomsFromConstructorMonom =new Monom[15];

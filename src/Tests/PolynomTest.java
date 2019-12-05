@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class JPolynomTest {
+public class PolynomTest {
 
     static  Monom[] arrMonomsFromString =new Monom[15];
     static  Polynom[] arrPolynomsFromString =new Polynom[15];
