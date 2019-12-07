@@ -174,8 +174,8 @@ public class ComplexFunctionTest {
     public void TtoString() {
         ComplexFunction cPlus= new ComplexFunction("plus",f0,f1);
         assertEquals("plus(2.0x^2+4.0,8.0x^2+6.0)",cPlus.toString());
-        cPlus.comp(f0);
-//        assertEquals("comp(plus(2.0x^2+4.0,8.0x^2+6.0),2.0x^2+4.0)",cPlus.toString());
-//        System.out.println(cPlus.toString());
+        cPlus.plus(f0);
+        assertEquals("plus(plus(2.0x^2+4.0,8.0x^2+6.0),2.0x^2+4.0)",cPlus.toString());
+        System.out.println(cPlus.toString());
     }
 }

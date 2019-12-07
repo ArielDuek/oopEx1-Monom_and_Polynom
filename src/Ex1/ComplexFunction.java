@@ -104,7 +104,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Plus;
         }
@@ -119,7 +119,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Times;
         }
@@ -134,7 +134,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Divid;
         }
@@ -149,7 +149,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Max;
         }
@@ -164,7 +164,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Min;
         }
@@ -179,7 +179,7 @@ public class ComplexFunction implements complex_function {
         }
         else
         {
-            this.left = this;
+            this.left = new ComplexFunction(this);
             this.right = f1;
             this.op = Operation.Comp;
         }
@@ -211,15 +211,7 @@ public class ComplexFunction implements complex_function {
     public String toString()
     {
         StringBuilder s=new StringBuilder();
-        s.append(this.opToString());
-        if(this.left!=null)
-        {
-            s.append("("+this.left().toString());
-        }
-        if(this.right!=null)
-        {
-            s.append(","+this.right().toString()+")");
-        }
+        s.append(this.opToString()+"("+this.left().toString()+","+this.right().toString()+")");
         return s.toString();
     }
     public String opToString()
@@ -239,7 +231,7 @@ public class ComplexFunction implements complex_function {
             case Times:
                 return "mul";
             case None:
-               return "none";
+               return "";
             default:
                 return "error";
 
@@ -258,6 +250,16 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public function copy() {
-        return null;
+        if(this instanceof ComplexFunction)
+        {
+            function f=new ComplexFunction(this);
+            return f;
+        }
+        else
+        {
+            function f=this.copy();
+            return f;
+        }
     }
+
 }
