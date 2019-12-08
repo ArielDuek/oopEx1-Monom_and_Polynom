@@ -30,14 +30,14 @@ public class ComplexFunction implements complex_function {
             }
             break;
 
-            case "times": {
+            case "mul": {
                 this.left = fLeft;
                 this.right = fRight;
                 this.op = Operation.Times;
             }
             break;
 
-            case "divid": {
+            case "div": {
                 this.left = fLeft;
                 this.right = fRight;
                 this.op = Operation.Divid;
@@ -240,13 +240,70 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public double f(double x) {
-        return 0;
+        switch (this.op)
+        {
+            case Max:
+                return Math.max(this.left.f(x),this.right.f(x));
+            case Min:
+                return Math.min(this.left.f(x),this.right.f(x));
+            case Comp:
+                return this.left.f(this.right.f(x));
+            case Plus:
+                return (this.left.f(x))+(this.right.f(x));
+            case Divid:
+                return (this.left.f(x))/(this.right.f(x));
+            case Times:
+                return (this.left.f(x))*(this.right.f(x));
+            case None:
+                return this.left.f(x);
+            default:
+                return 0;
+
+        }
     }
 
     @Override
     public function initFromString(String s) {
-        return null;
+        function ans = null;
+        s = s.toLowerCase();
+        String st = s.substring(0,s.indexOf("(")+1);
+        int start = s.indexOf(st);
+        if(start>=0 && s.endsWith(")")) {
+            int commaInd = mainComma(s.substring(start+st.length(),s.length()-1));
+            function left = initFromString(s.substring(start+st.length(),start+st.length()+commaInd));
+            function right = initFromString(s.substring(start+st.length()+commaInd+1,s.length()-1));
+            String op = st.substring(0,st.length()-1);
+            ans = new ComplexFunction(op,left,right);
+        }
+        else {
+            function a=new Polynom();
+            ans = a.initFromString(s);
+        }
+        return ans;
     }
+
+    /**
+     * This static function returns the index of main comma (","),
+     * in case of an invalid from returns -1;
+     * @param s: represents a form
+     * @return the index of the main comma (-1 if none).
+     */
+    private static int mainComma(String s) {
+        int ans = -1;
+        int c =0;
+        boolean found = false;
+        for(int i=0;i<s.length() && !found;i++) {
+            char ch = s.charAt(i);
+            if(ch=='(') {c++;}
+            if(ch==')') {c--;}
+            if(ch==',' && c==0) {
+                ans = i;
+                found=true;
+            }
+        }
+        return ans;
+    }
+
 
     @Override
     public function copy() {

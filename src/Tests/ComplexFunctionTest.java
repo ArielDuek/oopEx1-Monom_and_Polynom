@@ -159,10 +159,26 @@ public class ComplexFunctionTest {
 
     @Test
     public void f() {
+        String toInit1 = "max(max(max(max(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),plus(div(1.0x+1.0,mul(mul(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)),div(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)),-1.0x^4+2.4x^2+3.1),0.1x^5-1.2999999999999998x+5.0)";
+        String toInit2 = "plus(div(1.0x+1.0,mul(mul(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)";
+        function inited1 = new ComplexFunction();
+        function inited2 = new ComplexFunction();
+        function a = inited1.initFromString(toInit1);
+        function b = inited2.initFromString(toInit2);
+        double ans1 = 5.6;
+        double ans2 = (4.0/-6.0)+2 ;
+        double fx1 = a.f(2);
+        double fx2 = b.f(3);
+        assertEquals(ans1,fx1,Monom.EPSILON);
+        assertEquals(ans2,fx2,Monom.EPSILON);
     }
 
     @Test
-    public void initFromString() {
+    public void initFromStringtest() {
+        String toInit = "max(max(max(max(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),plus(div(1.0x+1.0,mul(mul(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)),div(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)),-1.0x^4+2.4x^2+3.1),0.1x^5-1.2999999999999998x+5.0)";
+        function inited = new ComplexFunction();
+        function a = inited.initFromString(toInit);
+        assertEquals(a.toString(),toInit);
     }
 
     @Test

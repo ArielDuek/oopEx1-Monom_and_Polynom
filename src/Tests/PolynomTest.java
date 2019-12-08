@@ -1,9 +1,6 @@
 package Tests;
 
-import Ex1.Monom;
-import Ex1.Polynom;
-import Ex1.Polynom_able;
-import Ex1.function;
+import Ex1.*;
 import org.junit.Before;
 import org.junit.Test;
 
