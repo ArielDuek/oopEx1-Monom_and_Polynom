@@ -175,10 +175,14 @@ public class ComplexFunctionTest {
 
     @Test
     public void initFromStringtest() {
-        String toInit = "max(max(max(max(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),plus(div(1.0x+1.0,mul(mul(1.0x+3.0,1.0x-2.0),1.0x-4.0)),2.0)),div(plus(-1.0x^4+2.4x^2+3.1,0.1x^5-1.2999999999999998x+5.0),-1.0x^4+2.4x^2+3.1)),-1.0x^4+2.4x^2+3.1),0.1x^5-1.2999999999999998x+5.0)";
-        function inited = new ComplexFunction();
+        String toInit = "mul(div(mul(8.0,8.0),4.0x^2),div(10.0,5.0))";
+        ComplexFunction inited = new ComplexFunction();
         function a = inited.initFromString(toInit);
         assertEquals(a.toString(),toInit);
+        ComplexFunction r = new ComplexFunction();
+        String q = "mul(div(mul(8,8),4x^2),div(10,5))";
+        function f = r.initFromString(q);
+        System.out.println(f.toString());
     }
 
     @Test

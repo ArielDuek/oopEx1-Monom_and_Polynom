@@ -32,6 +32,19 @@ public class Polynom implements Polynom_able{
      */
     public Polynom(String s)
     {
+//        StringBuffer temp=new StringBuffer();
+//        if (s.endsWith(" "))
+//        {
+//            s=s.substring(0,s.length()-1);
+//        }
+//        for (int i = 0; i < s.length()-1; i++)
+//        {
+//            if(s.charAt(i)!=' ' || (s.charAt(i+1)==' ' && (s.charAt(i+1)=='+' || s.charAt(i+1)=='-')))
+//          {
+//              temp.append(s.charAt(i));
+//          }
+//        }
+//        s=temp.toString();
         polinomLL= new LinkedList<Monom>();
         String current = "";
         s+="+";
