@@ -295,4 +295,13 @@ public class PolynomTest {
             assertEquals(expected[i],arrPolynomsFromString[i].area(start,end,Monom.EPSILON),0.0001);
         }
     }
+
+    @Test
+    public void deleteSpace()
+    {
+        String s=" +0.1x^5 -1.2999999999999998x +5.0";
+        Polynom p=new Polynom(s);
+        System.out.println(p.toString());
+
+    }
 }
