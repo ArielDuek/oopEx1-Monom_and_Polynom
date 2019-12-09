@@ -1,6 +1,7 @@
 package Ex1;
 
 public class ComplexFunction implements complex_function {
+
     private function left;
     private function right;
     private Operation op;
