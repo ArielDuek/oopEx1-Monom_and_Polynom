@@ -390,6 +390,8 @@ public class ComplexFunctionTest {
         cPlus.plus(f0);
         assertEquals("plus(plus(2.0x^2+4.0,8.0x^2+6.0),2.0x^2+4.0)",cPlus.toString());
         System.out.println(cPlus.toString());
+        ComplexFunction cf =new ComplexFunction (new Polynom("x^2+3"));
+        System.out.println(cf.toString());
     }
 
     @Test

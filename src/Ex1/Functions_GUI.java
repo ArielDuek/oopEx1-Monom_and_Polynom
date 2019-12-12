@@ -154,7 +154,7 @@ public class Functions_GUI implements functions {
 
     @Override
     public boolean contains(Object o) {
-        return this.listOfComplexF.contains(0);
+        return this.listOfComplexF.contains(o);
     }
 
     @Override

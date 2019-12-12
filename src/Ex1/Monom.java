@@ -53,6 +53,11 @@ public class Monom<STRBKJ> implements function {
         return new Monom(this.get_coefficient() * this.get_power(), this.get_power() - 1);
     }
 
+    /**
+     * The function checks the Y value at a point
+     * @param x The X value is placed in the function to discover the Y value
+     * @return  Y value at a point
+     */
     public double f(double x) {
         double ans = 0;
         double p = this.get_power();
@@ -185,9 +190,9 @@ public class Monom<STRBKJ> implements function {
     }
 
     /**
-     * @param m Monom for comparison
-     * @return An boolean expression that signifies whether the monomies are equal or not
-     * The function checks whether the two monomies are equal in deflection of Epsilon
+     * @param m function for comparison
+     * @return An boolean expression that signifies whether the monom is equal to a function or not
+     * The function checks whether the the monom is equal to a function in deflection of Epsilon
      */
 
     public boolean equals (Object m) {
@@ -195,7 +200,6 @@ public class Monom<STRBKJ> implements function {
 		If so, it performs the appropriate comparison*/
         if(m instanceof Monom)
         {
-
             double dc = this.get_coefficient() -((Monom) m).get_coefficient();
             if (Math.abs(dc) < EPSILON && this.get_power() == ((Monom) m).get_power()) return true;
             return false;
@@ -233,7 +237,5 @@ public class Monom<STRBKJ> implements function {
     }
     private double _coefficient;
     private int _power;
-
-
 }
 

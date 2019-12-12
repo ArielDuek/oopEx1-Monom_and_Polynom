@@ -1,5 +1,7 @@
 package Ex1;
 
+import java.math.BigDecimal;
+
 public class ComplexFunction implements complex_function {
     public static final double EPSILON = 0.0000001;
     private function left;
@@ -88,9 +90,9 @@ public class ComplexFunction implements complex_function {
 //        }
 //        else //if fLeft=Monom |Polynom
 //        {
-            this.left = fLeft;
-            this.op = Operation.None;
-            this.right = null;
+        this.left = fLeft;
+        this.op = Operation.None;
+        this.right = null;
 //        }
     }
 
@@ -220,9 +222,16 @@ public class ComplexFunction implements complex_function {
 
     public String toString()
     {
-        StringBuilder s=new StringBuilder();
-        s.append(this.opToString()+"("+this.left().toString()+","+this.right().toString()+")");
-        return s.toString();
+        if(this.op==Operation.None)
+        {
+            return this.left().toString();
+        }
+        else
+        {
+            StringBuilder s = new StringBuilder();
+            s.append(this.opToString() + "(" + this.left().toString() + "," + this.right().toString() + ")");
+            return s.toString();
+        }
     }
     public String opToString()
     {
@@ -336,11 +345,20 @@ public class ComplexFunction implements complex_function {
         double left=0;
         double right=0;
 
-        for (int i = -40; i <=40 &&ans; i++) {
-            left=this.f((double)i);
-            right=cFunction.f((double)i);
+        for (int i = -80; i <=80 &&ans; i++) {
+            left=this.f(i);
+            right=cFunction.f(i);
             if(Math.abs(left-right)>EPSILON)
                 ans=false;
+            if(!ans)
+            {
+                left=(double)Math.round((this.f(i)*10000000000000000d)/10000000000000000d);
+                right=(double)Math.round((cFunction.f(i)*10000000000000000d)/10000000000000000d);
+                if(Math.abs(left-right)>EPSILON)
+                    ans=false;
+                else
+                    ans=true;
+            }
         }
         return ans;
     }

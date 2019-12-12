@@ -207,6 +207,7 @@ public class PolynomTest {
     public void substract() {
         Polynom m1 = new Polynom("-4.0x^4-89.0");
         Polynom m2 = new Polynom("-3.0x^5-5.0x^3-23.0");
+        //prob
         Polynom m3 = new Polynom("-2.0x^4+1.0x^2+6.0x-10.0");
         Polynom m4 = new Polynom("4.0x^4+1.0x^2");
         Polynom m5 = new Polynom("3.0x^5+5.0x^3+4.0x-754.0");
