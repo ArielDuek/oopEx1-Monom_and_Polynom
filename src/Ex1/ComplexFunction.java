@@ -1,7 +1,7 @@
 package Ex1;
 
 public class ComplexFunction implements complex_function {
-
+    public static final double EPSILON = 0.0000001;
     private function left;
     private function right;
     private Operation op;
@@ -80,9 +80,18 @@ public class ComplexFunction implements complex_function {
      */
     public ComplexFunction(function fLeft)
     {
-        this.left=fLeft;
-        this.op=Operation.None;
-        this.right=null;
+//        if(fLeft instanceof ComplexFunction) //if fLeft=ComplexFunction
+//        {
+//            this.left=((ComplexFunction) fLeft).left();
+//            this.right=((ComplexFunction) fLeft).right();
+//            this.op=((ComplexFunction) fLeft).getOp();
+//        }
+//        else //if fLeft=Monom |Polynom
+//        {
+            this.left = fLeft;
+            this.op = Operation.None;
+            this.right = null;
+//        }
     }
 
     /**
@@ -232,7 +241,7 @@ public class ComplexFunction implements complex_function {
             case Times:
                 return "mul";
             case None:
-               return "";
+                return "";
             default:
                 return "error";
 
@@ -320,5 +329,20 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    public boolean equals(Object c)
+    {
+        function cFunction=(function)c;
+        boolean ans=true;
+        double left=0;
+        double right=0;
+
+        for (int i = -40; i <=40 &&ans; i++) {
+            left=this.f((double)i);
+            right=cFunction.f((double)i);
+            if(Math.abs(left-right)>EPSILON)
+                ans=false;
+        }
+        return ans;
+    }
 
 }

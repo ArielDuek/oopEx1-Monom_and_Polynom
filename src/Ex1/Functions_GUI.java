@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+
 public class Functions_GUI implements functions {
     private static Object Range;
     public LinkedList<function> listOfComplexF=new LinkedList();
@@ -99,7 +100,12 @@ public class Functions_GUI implements functions {
         }
 
     }
-
+    public void drawFunctions()
+    {
+        Range rx = new Range(-10, 10);
+        Range ry = new Range(-10, 10);
+        drawFunctions(1000, 600, rx, ry, 200);
+    }
     @Override
     public void drawFunctions(String json_file) {
         Gson gson = new Gson();
@@ -112,10 +118,25 @@ public class Functions_GUI implements functions {
             drawFunctions(parameters.getWidth(),parameters.getHeight(),rx,ry,parameters.getResolution());
 
         }
-        catch (FileNotFoundException e) {
-            Range rx = new Range(-10,10);
-            Range ry = new Range(-10,10);
-            drawFunctions(1000,600,rx,ry,200);
+        catch (FileNotFoundException|IllegalArgumentException |com.google.gson.JsonSyntaxException|com.google.gson.JsonIOException e) {
+
+            if(e instanceof IllegalArgumentException)
+            {
+                this.drawFunctions();
+                System.out.println("canvas problem");
+            }
+
+            if(e instanceof com.google.gson.JsonSyntaxException)
+            {
+                this.drawFunctions();
+                throw new com.google.gson.JsonSyntaxException("com.google.gson.JsonSyntaxException");
+            }
+            if(e instanceof com.google.gson.JsonIOException)
+            {
+                this.drawFunctions();
+                throw new com.google.gson.JsonIOException("com.google.gson.JsonIOException");
+            }
+            this.drawFunctions();
             e.printStackTrace();
 
         }
@@ -193,10 +214,10 @@ public class Functions_GUI implements functions {
         g1.listOfComplexF.add(c.initFromString("plus(x^2,2x)"));
         g1.listOfComplexF.add(c.initFromString("min(plus(x^2,2x),9x^7)"));
         g1.listOfComplexF.add(c.initFromString("max(min(plus(x^2,2x),9x^7),comp(5x,7x))"));
-        String name="C:/Users/tom/Desktop/new.txt";
-        g1.saveToFile(name);
-        Range r=new Range(-20,20);
-        Range r1=new Range(-20,20);
+//        String name="C:/Users/tom/Desktop/new.txt";
+//        g1.saveToFile(name);
+//        Range r=new Range(-20,20);
+//        Range r1=new Range(-20,20);
        // g1.drawFunctions(900,900,r,r1,200);
         g1.drawFunctions("C:/Users/tom/Desktop/GUI.txt");
     }

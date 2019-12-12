@@ -1,7 +1,6 @@
 package Tests;
 
-import Ex1.Monom;
-import Ex1.function;
+import Ex1.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -287,7 +286,7 @@ public class MonomTest {
     }
 
     /**
-    Checks whether the connection between two monomers is performed properly
+     Checks whether the connection between two monomers is performed properly
      */
     @Test
     public void add() {
@@ -438,7 +437,9 @@ public class MonomTest {
     @Test
     public void testEquals() {
 
-        Monom notEqual=new Monom(100,0);
+        //**Compare two monomers comparison**
+        Monom notEqualForMonom=new Monom(100,0);
+        Polynom notEqualForPolynom=new Polynom("100");
 
         //Checks whether identical and constant arrays are equal
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
@@ -448,8 +449,45 @@ public class MonomTest {
 
         //Checks whether the cells in the arrays are identical and the constants are essentially monomers equal to each other
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
-            assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqual));
-            assertFalse(arrMonomsFromString[i].equals(notEqual));
+            assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqualForMonom));
+            assertFalse(arrMonomsFromString[i].equals(notEqualForMonom));
+        }
+
+        //**Monom and Polynomial Comparison Checker**
+        Polynom [] expected ={new Polynom("0"),new Polynom("15"),new Polynom("15.5"),new Polynom("x"),new Polynom("-x"),new Polynom("+x"),new Polynom("4.5x"),new Polynom("2.5x"),new Polynom("-4.5x"),new Polynom("-2.5x"),new Polynom("2x^2"),new Polynom("6.7x^5"),new Polynom("-9x^7"),new Polynom("8x^7"),new Polynom("0X^90")};
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            assertTrue(arrMonomsFromConstructorMonom[i].equals(expected[i]));
+            assertTrue(arrMonomsFromString[i].equals(expected[i]));
+        }
+
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqualForPolynom));
+            assertFalse(arrMonomsFromString[i].equals(notEqualForPolynom));
+        }
+
+        //**Monom and Complex function Comparison Checker**
+
+        ComplexFunction c=new ComplexFunction();
+        function f0=c.initFromString("0");
+        function f1=c.initFromString("15");
+        function f2=c.initFromString("15.5");
+        function f3=c.initFromString("mul(1,x)");
+        function f4=c.initFromString("-x");
+        function f5=c.initFromString("+x");
+        function f6=c.initFromString("mul(4.5,x)");
+        function f7=c.initFromString("mul(2.5,x)");
+        function f8=c.initFromString("mul(-4.5,x)");
+        function f9=c.initFromString("mul(-2.5,x)");
+        function f10=c.initFromString("mul(2x,x)");
+        function f11=c.initFromString("mul(6.7x,x^4)");
+        function f12=c.initFromString("mul(-9,x^7)");
+        function f13=c.initFromString("mul(8x,x^6)");
+        function f14=c.initFromString("mul(0x,x^89)");
+
+        function[] expectedC={new ComplexFunction(f0),f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14};
+        for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
+            assertTrue(arrMonomsFromConstructorMonom[i].equals(expectedC[i]));
+            assertTrue(arrMonomsFromString[i].equals(expectedC[i]));
         }
     }
 

@@ -391,4 +391,16 @@ public class ComplexFunctionTest {
         assertEquals("plus(plus(2.0x^2+4.0,8.0x^2+6.0),2.0x^2+4.0)",cPlus.toString());
         System.out.println(cPlus.toString());
     }
+
+    @Test
+    public void equals() {
+        function f0=new Monom("2x");
+        function f1=new Monom("x");
+        function f2=new Monom("x");
+        ComplexFunction c = new ComplexFunction(f0);
+        ComplexFunction c1 = new ComplexFunction("plus",f1,f2);
+        assertTrue(c.equals(c1));
+
+    }
+
 }

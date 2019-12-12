@@ -258,6 +258,7 @@ public class Polynom implements Polynom_able{
      * Compare a monom in the first polynom to a monom in the second polynom if they are not equal then return false.
      * This is how all monomes are checked, if all are equal return true.
      */
+    //complexFunctipn
     @Override
     public boolean equals(Object p1) {
         if(p1 instanceof Monom){
