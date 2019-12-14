@@ -20,11 +20,20 @@ public class Monom<STRBKJ> implements function {
         return _Comp;
     }
 
+    /**
+     * Constructor receiving 2 parameters, coefficient and power
+     * @param a parameter representing the coefficient in monom
+     * @param b parameter representing the power in monom
+     */
     public Monom(double a, int b) {
         this.set_coefficient(a);
         this.set_power(b);
     }
 
+    /**
+     * copy constructor for monomcopy constructor for monom
+     * @param ot The monum we want to copy
+     */
     public Monom(Monom ot) {
         this(ot.get_coefficient(), ot.get_power());
     }
@@ -76,10 +85,10 @@ public class Monom<STRBKJ> implements function {
      * @param s String received by the user
      * The function gets a string and the function should check if the string is a proper monum if the string is correcr,
      * the function creates a monum.otherwise the function throws an error.
-     * A proper monum is one of the following: a,-a,ax,-ax,x,-x,ax^b,-ax^b,x^b,-x^b
-     *Examples of bad monum are the following:7tl,4^2,(4+8),8*4,3/5,4..4,(6-7),(2+2)x^4,x^2*3,3t,3t^7,x^2*3,x*x
+     * A proper monum is one of the following: a,-a,ax,-ax,x,-x,ax^b,-ax^b,x^b,-x^b,a x^b
+     *Examples of bad monum are the following:7tl,4^2,(4+8),8*4,3/5,4..4,(6-7),(2+2)x^4,x^2*3,3t,3t^7,x^2*3,x*x,ax ^b,ax^ b,ax^-b,   ax^b   ;
      */
-    public Monom(String s)  {
+    public Monom(String s) throws NumberFormatException {
         double a;
         int b;
         s = s.toLowerCase();
@@ -116,10 +125,10 @@ public class Monom<STRBKJ> implements function {
             set_coefficient(a);
             set_power(b);
         }
-        catch (Exception e)
+        catch (NumberFormatException e)
         {
-            System.out.println("ERR: the string is null or string does contain a not parsable double");
             set_isValidMonom(false);
+            throw new NumberFormatException("ERR: the string is null or string does contain a not parsable number\nor the string has invalid spaces");
         }
     }
 
@@ -170,6 +179,7 @@ public class Monom<STRBKJ> implements function {
     }
 
     /**
+     * Action done on a monom But note that the monum will not change at any point but only a new object type function will be created from the string
      * @param s String that will become a object type function
      * @return function type Monom
      */
@@ -190,9 +200,10 @@ public class Monom<STRBKJ> implements function {
     }
 
     /**
+     *The function checks whether the the monom is equal to a monom in deflection of Epsilon,if m is polynom or complex function
+     * the comparison is done by their comparative function
      * @param m function for comparison
      * @return An boolean expression that signifies whether the monom is equal to a function or not
-     * The function checks whether the the monom is equal to a function in deflection of Epsilon
      */
 
     public boolean equals (Object m) {

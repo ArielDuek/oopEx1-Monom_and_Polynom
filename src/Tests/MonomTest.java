@@ -3,7 +3,6 @@ package Tests;
 import Ex1.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.function.Function;
 
 import static org.junit.Assert.*;
@@ -15,8 +14,7 @@ public class MonomTest {
 
     //Here we will create all the monoms for testing the methods
     @Before
-    public void BeforeEach()
-    {
+    public void BeforeEach() {
         //Build the monoms with the help of the monom string constructor
         arrMonomsFromString[0]=new Monom ("0");
         arrMonomsFromString[1]=new Monom ("15");
@@ -53,7 +51,8 @@ public class MonomTest {
     }
 
     /**
-     * Tests the constructor that receives parameters for building monom
+     * Tests the constructor that receives parameters for building monom and the constructor
+     * that receives string for building monom
      */
     @Test
     public void Monom() {
@@ -82,6 +81,7 @@ public class MonomTest {
 
         Monom[] expected0={m50,m51,m52,m53,m54,m55,m56,m57,m58,m59,m60,m61,m62,m63,m64};
         Monom[] expected1=new Monom[15];
+
         //A loop that creates from the array of strings "temp" monomes
         for (int i = 0; i <expected1.length ; i++) {
             expected1[i]=new Monom(temp[i]);
@@ -90,15 +90,19 @@ public class MonomTest {
         //The comparison
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
             assertEquals(expected0[i],arrMonomsFromConstructorMonom[i]);
-            assertEquals(expected1[i],arrMonomsFromString[i]);
+            assertEquals(expected1[i],arrMonomsFromConstructorMonom[i]);
             assertEquals(temp[i],arrMonomsFromConstructorMonom[i].toString());
+
+            assertEquals(expected0[i],arrMonomsFromString[i]);
+            assertEquals(expected1[i],arrMonomsFromString[i]);
             assertEquals(temp[i],arrMonomsFromString[i].toString());
         }
 
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
             assertNotEquals(notEqual,arrMonomsFromConstructorMonom[i]);
-            assertNotEquals(notEqual,arrMonomsFromString[i]);
             assertNotEquals(notEqual.toString(),arrMonomsFromConstructorMonom[i].toString());
+
+            assertNotEquals(notEqual,arrMonomsFromString[i]);
             assertNotEquals(notEqual.toString(),arrMonomsFromString[i].toString());
         }
 
@@ -107,6 +111,44 @@ public class MonomTest {
             assertNotNull(null,arrMonomsFromString[i]);
         }
 
+        /*Errors must be thrown errString.length times.
+        In this test, we check that representatives of all the wrong inputs actually return an error
+        */
+        String[] errString={"7tl","","8*9","3/5","4..4","6-7","(6-7)","(2+2)x^4","x^2*3","3t","3t^7","x*x","2x ^7","2x^ 7","   5x^7   ","4 5","(9+9)","x^-7"};
+        int counter=0;
+        for (int i = 0; i <errString.length ; i++) {
+            try{
+                Monom m=new Monom(errString[i]);
+            }
+            catch ( RuntimeException e)
+            {
+                counter++;
+                continue;
+
+            }
+        }
+
+        assertEquals(errString.length,counter);
+
+    }
+
+    @Test
+    public void CopyMonom()
+    {
+        Monom [] copy=new Monom[15];
+        /*Copies the regular monoms of tests from the array with the help of the copy constructor
+        and put them in the the array called copy*/
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            copy[i]=new Monom(arrMonomsFromConstructorMonom[i]);
+        }
+
+        /*
+        Checks whether copying has been successful by comparing the coefficients and holdings of the monomers
+         */
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            assertEquals(arrMonomsFromConstructorMonom[i].get_coefficient(),copy[i].get_coefficient(),Monom.EPSILON);
+            assertEquals(arrMonomsFromConstructorMonom[i].get_power(),copy[i].get_power());
+        }
     }
 
     /**
@@ -233,6 +275,10 @@ public class MonomTest {
 
     }
 
+    /**
+     *Checks whether function f returns the correct Y value to X values
+     * Note that in some cases the delta should have been larger (0.001)
+     */
     @Test
     public void f() {
         //Checks the point value at x=1
@@ -253,14 +299,14 @@ public class MonomTest {
         double[] expectedFor5_55 ={0.0,15.0,15.5,5.55,-5.55,5.55,24.975,13.875,-24.975,-13.875,61.605,35280.90512,-1459800.108,1297600.096,0.0};
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertEquals(expectedFor5_55[i],arrMonomsFromString[i].f(5.55),0.01);
+            assertEquals(expectedFor5_55[i],arrMonomsFromString[i].f(5.55),0.001);
         }
 
         //Checks the point value at x=-5.55
         double[] expectedForMinus5_55 ={0.0,15.0,15.5,-5.55,5.55,-5.55,-24.975,-13.875,24.975,13.875,61.605,-35280.90512,1459800.108,-1297600.096,0.0};
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertEquals(expectedForMinus5_55[i],arrMonomsFromString[i].f(-5.55),0.01);
+            assertEquals(expectedForMinus5_55[i],arrMonomsFromString[i].f(-5.55),0.001);
         }
 
     }
@@ -273,11 +319,15 @@ public class MonomTest {
     public void isZero() {
         Monom zeroByParamets=new Monom(0.0,0);
         Monom zeroByString=new Monom("0");
+        String s="0.0";
 
         assertEquals(zeroByParamets,arrMonomsFromString[0]);
         assertEquals(zeroByString,arrMonomsFromString[0]);
+        assertEquals(s,arrMonomsFromString[0].toString());
+
         assertEquals(zeroByParamets,arrMonomsFromConstructorMonom[0]);
         assertEquals(zeroByString,arrMonomsFromConstructorMonom[0]);
+        assertEquals(s,arrMonomsFromConstructorMonom[0].toString());
 
         assertNotEquals(100,arrMonomsFromString[0]);
         assertNotEquals(100,arrMonomsFromConstructorMonom[0]);
@@ -298,6 +348,7 @@ public class MonomTest {
         Monom addForPower7=new Monom("2x^7");
         Monom addForPower90=new Monom("2x^90");
 
+        //Connecting monomies with the same strong monomers
         arrMonomsFromString[0].add(addForPower0);
         arrMonomsFromString[1].add(addForPower0);
         arrMonomsFromString[2].add(addForPower0);
@@ -323,6 +374,7 @@ public class MonomTest {
             assertNotEquals("100.0",arrMonomsFromConstructorMonom[i].toString());
         }
 
+        //Connecting monomies with the same strong monomers
         arrMonomsFromConstructorMonom[0].add(addForPower0);
         arrMonomsFromConstructorMonom[1].add(addForPower0);
         arrMonomsFromConstructorMonom[2].add(addForPower0);
@@ -347,6 +399,70 @@ public class MonomTest {
             assertNotEquals("100.0",arrMonomsFromString[i].toString());
         }
 
+
+        /*
+         *Connecting monomers with different power to monomers.Need to throw arrMonomsFromConstructorMonom.length errors
+         */
+        int counter=0;
+
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            try{
+
+                arrMonomsFromConstructorMonom[0].add(addForPower1);
+                arrMonomsFromConstructorMonom[1].add(addForPower1);
+                arrMonomsFromConstructorMonom[2].add(addForPower1);
+                arrMonomsFromConstructorMonom[3].add(addForPower7);
+                arrMonomsFromConstructorMonom[4].add(addForPower7);
+                arrMonomsFromConstructorMonom[5].add(addForPower7);
+                arrMonomsFromConstructorMonom[6].add(addForPower7);
+                arrMonomsFromConstructorMonom[7].add(addForPower7);
+                arrMonomsFromConstructorMonom[8].add(addForPower7);
+                arrMonomsFromConstructorMonom[9].add(addForPower7);
+                arrMonomsFromConstructorMonom[10].add(addForPower7);
+                arrMonomsFromConstructorMonom[11].add(addForPower7);
+                arrMonomsFromConstructorMonom[12].add(addForPower5);
+                arrMonomsFromConstructorMonom[13].add(addForPower5);
+                arrMonomsFromConstructorMonom[14].add(addForPower5);
+            }
+            catch (RuntimeException e)
+            {
+                counter++;
+                continue;
+            }
+        }
+        assertEquals(arrMonomsFromConstructorMonom.length,counter);
+
+        /*
+         *Connecting monomers with different power to monomers.Need to throw arrMonomsFromString.length errors
+         */
+        counter=0;
+
+        for (int i = 0; i <arrMonomsFromString.length ; i++) {
+            try{
+
+                arrMonomsFromString[0].add(addForPower1);
+                arrMonomsFromString[1].add(addForPower1);
+                arrMonomsFromString[2].add(addForPower1);
+                arrMonomsFromString[3].add(addForPower7);
+                arrMonomsFromString[4].add(addForPower7);
+                arrMonomsFromString[5].add(addForPower7);
+                arrMonomsFromString[6].add(addForPower7);
+                arrMonomsFromString[7].add(addForPower7);
+                arrMonomsFromString[8].add(addForPower7);
+                arrMonomsFromString[9].add(addForPower7);
+                arrMonomsFromString[10].add(addForPower7);
+                arrMonomsFromString[11].add(addForPower7);
+                arrMonomsFromString[12].add(addForPower5);
+                arrMonomsFromString[13].add(addForPower5);
+                arrMonomsFromString[14].add(addForPower5);
+            }
+            catch (RuntimeException e)
+            {
+                counter++;
+                continue;
+            }
+        }
+        assertEquals(arrMonomsFromString.length,counter);
     }
 
     /**
@@ -354,28 +470,14 @@ public class MonomTest {
      */
     @Test
     public void multipy() {
-//        Monom mm0 =new Monom ("0");
-//        Monom mm1 =new Monom ("15");
-//        Monom mm2 =new Monom ("15.5");
-//        Monom mm3 =new Monom ("x");
-//        Monom mm4 =new Monom ("-x");
-//        Monom mm5 =new Monom ("+x");
-//        Monom mm6 =new Monom ("4.5x");
-//        Monom mm7 =new Monom ("2.5x");
-//        Monom mm8 =new Monom ("-4.5x");
-//        Monom mm9 =new Monom ("-2.5x");
-//        Monom mm10 =new Monom ("2x^2");
-//        Monom mm11 =new Monom ("6.7x^5");
-//        Monom mm12 =new Monom ("-9x^7");
-//        Monom mm13 =new Monom ("8x^7");
-//        Monom mm14 =new Monom ("0X^90");
-
         Monom MulMonom =new Monom ("2.55x^2");
-
-//        Monom[] MulArrMonomsFromString={mm0,mm1,mm2,mm3,mm4,mm5,mm6,mm7,mm8,mm9,mm10,mm11,mm12,mm13,mm14};
 
         for (int i = 0; i <arrMonomsFromString.length ; i++) {
             arrMonomsFromString[i].multipy(MulMonom);
+        }
+
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            arrMonomsFromConstructorMonom[i].multipy(MulMonom);
         }
 
         String[] expected={"0.0","38.25x^2","39.525x^2","2.55x^3","-2.55x^3","2.55x^3","11.475x^3","6.375x^3","-11.475x^3","-6.375x^3","5.1x^4","17.085x^7","-22.95x^9","20.4x^9","0.0"};
@@ -388,6 +490,14 @@ public class MonomTest {
             assertNotEquals(MulMonom.toString(),arrMonomsFromString[i].toString());
         }
 
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            assertEquals(expected[i],arrMonomsFromConstructorMonom[i].toString());
+        }
+
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
+            assertNotEquals(MulMonom.toString(),arrMonomsFromConstructorMonom[i].toString());
+        }
+
     }
 
     /**
@@ -396,13 +506,13 @@ public class MonomTest {
     @Test
     public void testToString() {
 
-        String[] expected={"0.0","15.0","15.5","1.0x","-1.0x","1.0x","4.5x","2.5x","-4.5x","-2.5x","2.0x^2","6.7x^5","-9.0x^7","8.0x^7","0.0X^90"};
+        String[] expected={"0.0","15.0","15.5","1.0x","-1.0x","1.0x","4.5x","2.5x","-4.5x","-2.5x","2.0x^2","6.7x^5","-9.0x^7","8.0x^7","0.0x^90"};
 
-        for (int i = 0; i <arrMonomsFromString.length-1 ; i++) {
+        for (int i = 0; i <arrMonomsFromString.length ; i++) {
             assertEquals(expected[i],arrMonomsFromString[i].toString());
         }
 
-        for (int i = 0; i <arrMonomsFromConstructorMonom.length-1; i++) {
+        for (int i = 0; i <arrMonomsFromConstructorMonom.length; i++) {
             assertEquals(expected[i],arrMonomsFromConstructorMonom[i].toString());
         }
 
@@ -417,28 +527,80 @@ public class MonomTest {
     }
 
     /**
+     *Checks that new function-type objects are created from the string
+     */
+    @Test
+    public void initFromString() {
+        String[] s = {"0.0", "15.0", "15.5", "1.0x", "-1.0x", "1.0x", "4.5x", "2.5x", "-4.5x", "-2.5x", "2.0x^2", "6.7x^5", "-9.0x^7", "8.0x^7", "0.0x^90"};
+        /*
+        Creating an function array from the array of the strings
+         */
+        function[] arrf = new function[15];
+        for (int i = 0; i < s.length; i++) {
+            arrf[i] = (arrMonomsFromString[i].initFromString(s[i]));
+        }
+
+        /*
+        Checks whether each cell in the array is a function instance.
+        Checks whether the coefficient of each function is equal to the coefficient of the monom,
+        Because the string arry is the same as the monom values
+        Checks whether the power of each function equals the power of the monom,
+        Because the string arry is the same as the monom values
+         */
+        for (int i = 0; i < arrMonomsFromString.length; i++) {
+            assertTrue(arrf[i] instanceof function);
+            assertTrue(arrf[i] instanceof Monom);
+            assertEquals(arrMonomsFromString[i].get_coefficient(), ((Monom) arrf[i]).get_coefficient(), Monom.EPSILON);
+            assertEquals(arrMonomsFromString[i].get_power(), ((Monom) arrf[i]).get_power());
+        }
+
+        /*Errors must be thrown errString.length times.
+        In this test, we check that representatives of all the wrong inputs actually return an error if we send them to the function initFromToString
+        */
+        String[] errString = {"7tl", "", "8*9", "3/5", "4..4", "6-7", "(6-7)", "(2+2)x^4", "x^2*3", "3t", "3t^7", "x*x", "2x ^7", "2x^ 7", "   5x^7   ", "4 5", "(9+9)"};
+        function[] arrf1 = new function[15];
+        int counter = 0;
+
+        for (int j = 0; j < 17; j++) {
+            try {
+                for (int i = 0; i < errString.length; i++) {
+                    arrf1[i] = (arrMonomsFromString[0].initFromString(errString[i]));
+                }
+            } catch (NumberFormatException e) {
+                counter++;
+                continue;
+            }
+        }
+        assertEquals(errString.length,counter);
+    }
+
+    /**
      * Checks whether the Equals function properly compares two monomers
      */
     @Test
     public void testEquals() {
 
-        //**Compare two monomers comparison**
         Monom notEqualForMonom=new Monom(100,0);
         Polynom notEqualForPolynom=new Polynom("100");
+        function fl=new Monom("50");
+        function fr=new Monom("50");
+        ComplexFunction notEqualForComplexFunction=new ComplexFunction("plus",fl,fr);
 
+        //**Compare two monomers comparison**
         //Checks whether identical and constant arrays are equal
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
             assertTrue(arrMonomsFromConstructorMonom[i].equals(arrMonomsFromString[i]));
             assertTrue(arrMonomsFromString[i].equals(arrMonomsFromConstructorMonom[i]));
         }
 
-        //Checks whether the cells in the arrays are identical and the constants are essentially monomers equal to each other
+        //Checks whether the cells in the arrays are equals to other monom
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
             assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqualForMonom));
             assertFalse(arrMonomsFromString[i].equals(notEqualForMonom));
         }
 
         //**Monom and Polynomial Comparison Checker**
+        //Checks whether the cells in the arrays are equals to polynoms
         Polynom [] expected ={new Polynom("0"),new Polynom("15"),new Polynom("15.5"),new Polynom("x"),new Polynom("-x"),new Polynom("+x"),new Polynom("4.5x"),new Polynom("2.5x"),new Polynom("-4.5x"),new Polynom("-2.5x"),new Polynom("2x^2"),new Polynom("6.7x^5"),new Polynom("-9x^7"),new Polynom("8x^7"),new Polynom("0X^90")};
         for (int i = 0; i <arrMonomsFromConstructorMonom.length ; i++) {
             assertTrue(arrMonomsFromConstructorMonom[i].equals(expected[i]));
@@ -476,8 +638,8 @@ public class MonomTest {
         }
 
         for (int i = 0; i < arrMonomsFromConstructorMonom.length; i++) {
-            assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqualForPolynom));
-            assertFalse(arrMonomsFromString[i].equals(notEqualForPolynom));
+            assertFalse(arrMonomsFromConstructorMonom[i].equals(notEqualForComplexFunction));
+            assertFalse(arrMonomsFromString[i].equals(notEqualForComplexFunction));
         }
     }
 
@@ -508,31 +670,6 @@ public class MonomTest {
 
     }
 
-    @Test
-    public void initFromString() {
-        String[] s={"0.0","15.0","15.5","1.0x","-1.0x","1.0x","4.5x","2.5x","-4.5x","-2.5x","2.0x^2","6.7x^5","-9.0x^7","8.0x^7","0.0X^90"};
-        /*
-        Creating an function array from the array of the strings
-         */
-        function [] arrf=new function[15];
-        for (int i = 0; i <s.length ; i++) {
-            arrf[i]=(arrMonomsFromString[i].initFromString(s[i]));
-        }
 
-        /*
-        Checks whether each cell in the array is a function instance.
-        Checks whether the coefficient of each function is equal to the coefficient of the monom,
-        Because the string arry is the same as the monom values
-        Checks whether the power of each function equals the power of the monom,
-        Because the string arry is the same as the monom values
-         */
-        for (int i = 0; i <arrMonomsFromString.length ; i++) {
-            assertTrue(arrf[i] instanceof function);
-            assertTrue(arrf[i] instanceof Monom);
-            assertEquals(arrMonomsFromString[i].get_coefficient(),((Monom)arrf[i]).get_coefficient(),Monom.EPSILON);
-            assertEquals(arrMonomsFromString[i].get_power(),((Monom)arrf[i]).get_power(),Monom.EPSILON);
-        }
-
-    }
 
 }
