@@ -300,9 +300,12 @@ public class PolynomTest {
     @Test
     public void deleteSpace()
     {
-        String s=" +0.1x^5 -1.2999999999999998x +5.0";
-        Polynom p=new Polynom(s);
-        System.out.println(p.toString());
+//        String s=" +0.1x^ 5 -1.2x +5.0";
+//        Polynom p=new Polynom(s);
+        String s="4 5";
+        Polynom p1=new Polynom(s);
+//        System.out.println(p.toString());
+        System.out.println(p1.toString());
 
     }
 }

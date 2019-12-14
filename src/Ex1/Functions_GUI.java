@@ -86,17 +86,20 @@ public class Functions_GUI implements functions {
         StdDraw.line(0,ry.get_min(),0,ry.get_max());
 
         StdDraw.setPenRadius(0.008);
+        StdDraw.setFont(new Font(null,Font.BOLD,15));
         //numbers on x
-        String s="";
+
         for (int i =(int) ry.get_min(); i <ry.get_max() ; i++) {
-            s=""+i;
-            StdDraw.text(-0.5,i,s);
+            if(i==0)
+                continue;
+            StdDraw.text(0.4,i,Integer.toString(i));
         }
 
         //numbers on y
         for (int i =(int) rx.get_min(); i <rx.get_max() ; i++) {
-            s=""+i;
-            StdDraw.text(i,-1,s);
+            if(i==0)
+                continue;
+            StdDraw.text(i,-0.4,Integer.toString(i));
         }
 
     }

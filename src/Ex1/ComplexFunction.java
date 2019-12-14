@@ -1,6 +1,5 @@
 package Ex1;
 
-import java.math.BigDecimal;
 
 public class ComplexFunction implements complex_function {
     public static final double EPSILON = 0.0000001;
@@ -16,6 +15,11 @@ public class ComplexFunction implements complex_function {
         this.right = null;
         this.op = Operation.None;
     }
+    public ComplexFunction(Operation op, function fLeft, function fRight)
+    {
+        this(op.toString(), fLeft,  fRight);
+
+    }
 
     /**
      * @param op     string that marks a mathematical operation
@@ -23,6 +27,7 @@ public class ComplexFunction implements complex_function {
      * @param fRight intended to be a right function
      */
     public ComplexFunction(String op, function fLeft, function fRight) {
+        op=opFromString(op);
         op = op.toLowerCase();
         switch (op) {
 
@@ -82,18 +87,9 @@ public class ComplexFunction implements complex_function {
      */
     public ComplexFunction(function fLeft)
     {
-//        if(fLeft instanceof ComplexFunction) //if fLeft=ComplexFunction
-//        {
-//            this.left=((ComplexFunction) fLeft).left();
-//            this.right=((ComplexFunction) fLeft).right();
-//            this.op=((ComplexFunction) fLeft).getOp();
-//        }
-//        else //if fLeft=Monom |Polynom
-//        {
         this.left = fLeft;
         this.op = Operation.None;
         this.right = null;
-//        }
     }
 
     /**
@@ -109,7 +105,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void plus(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Plus;
@@ -124,7 +124,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void mul(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Times;
@@ -139,7 +143,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void div(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Divid;
@@ -154,7 +162,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void max(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Max;
@@ -169,7 +181,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void min(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Min;
@@ -184,7 +200,11 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public void comp(function f1) {
-        if(this.getOp()==Operation.None)
+        if(f1==null)
+        {
+            throw new RuntimeException("the functiom cant be null");
+        }
+        else if(this.getOp()==Operation.None)
         {
             this.right=f1;
             this.op=Operation.Comp;
@@ -249,8 +269,42 @@ public class ComplexFunction implements complex_function {
                 return "div";
             case Times:
                 return "mul";
-            case None:
+            default:
+                return "error";
+
+        }
+    }
+
+    public String opFromString(String s)
+    {
+        switch (s)
+        {
+            case "Max":
+                return "max";
+            case "Min":
+                return "min";
+            case "Comp":
+                return "comp";
+            case "Plus":
+                return "plus";
+            case "Divid" :
+                return "div";
+            case "Times":
+                return "mul";
+            case "None":
                 return "";
+            case "plus":
+                return "plus";
+            case "mul":
+                return "mul";
+            case "div":
+                return "div";
+            case "max":
+                return "max";
+            case "min":
+                return "min";
+            case "comp":
+                return "comp";
             default:
                 return "error";
 
@@ -269,8 +323,15 @@ public class ComplexFunction implements complex_function {
                 return this.left.f(this.right.f(x));
             case Plus:
                 return (this.left.f(x))+(this.right.f(x));
-            case Divid:
-                return (this.left.f(x))/(this.right.f(x));
+            case Divid: {
+//                return (this.left.f(x)) / (this.right.f(x));
+                if (this.right.f(x) == 0)
+                    throw new ArithmeticException("It is not allowed to divide by 0");
+                else {
+                    return (this.left.f(x)) / (this.right.f(x));
+
+                }
+            }
             case Times:
                 return (this.left.f(x))*(this.right.f(x));
             case None:
@@ -283,6 +344,7 @@ public class ComplexFunction implements complex_function {
 
     @Override
     public function initFromString(String s) {
+        deleteSpaces(s);
         function ans = null;
         s = s.toLowerCase();
         String st = s.substring(0,s.indexOf("(")+1);
@@ -321,6 +383,14 @@ public class ComplexFunction implements complex_function {
             }
         }
         return ans;
+    }
+
+    public  void  deleteSpaces (String s){
+        StringBuffer spDel = new StringBuffer();
+        for (int i = 0; i < s.length() ; i++) {
+            if ((s.charAt(i)!=' ') || (s.charAt(i)==' ' && (i==0 || i==s.length()-1)) || (s.charAt(i)==' ' && !(s.charAt(i+1)=='+' || s.charAt(i+1)=='-' || s.charAt(i-1)=='+' || s.charAt(i-1)=='-'))) spDel.append(s.charAt(i));
+        }
+        s=spDel.toString();
     }
 
 

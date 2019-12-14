@@ -13,43 +13,65 @@ import java.util.LinkedList;
  * @author Boaz
  *
  */
-public class Polynom implements Polynom_able{
-    public LinkedList <Monom> polinomLL;
+public class Polynom implements Polynom_able {
+    public LinkedList<Monom> polinomLL;
+
     /**
      * Zero (empty polynom)
      */
-    public Polynom()
-    {
-        polinomLL= new LinkedList<Monom>();
+    public Polynom() {
+        polinomLL = new LinkedList<Monom>();
     }
+
     /**
      * init a Polynom from a String such as:
-     *  {"x", "3+1.4X^3-34x", "2+2x^2+4x^5"};
-     *  A proper polynomial is the connection or subtraction of proper monomies
-     *  Incorrect input:
-     *  (3x^2+1),(3x^2+1)*(9x+11),-(7x+7x^5)
+     * {"x", "3+1.4X^3-34x", "2+2x^2+4x^5"};
+     * A proper polynomial is the connection or subtraction of proper monomies
+     * Incorrect input:
+     * (3x^2+1),(3x^2+1)*(9x+11),-(7x+7x^5)....
+     *
      * @param s: is a string represents a Polynom
      */
-    public Polynom(String s)
-    {
-        polinomLL= new LinkedList<Monom>();
+    public Polynom(String s) {
+       String sd=deleteSpaces(s);
+        polinomLL = new LinkedList<Monom>();
         String current = "";
-        s+="+";
-        for (int i = 0; i < s.length(); i++){
-            if ((s.charAt(i) == '+' || s.charAt(i)== '-') && current!=""){
-                Monom a = new Monom(current);
-                this.add(a);
-                current = "" + s.charAt(i);
+        sd += "+";
 
-            }
-            else{
-                current+= s.charAt(i);
+            for (int i = 0; i < sd.length(); i++) {
+                if ((sd.charAt(i) == '+' || sd.charAt(i) == '-') && current != "") {
+                    try {
+                        Monom a = new Monom(current);
+                        this.add(a);
+                        current = "" + sd.charAt(i);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        throw new ArithmeticException("Bad math expression");
+                    }
+
+                } else {
+                    current += sd.charAt(i);
+                }
             }
         }
+
+    /**
+     * The function passes the character string and deletes zeros that appear before or after plus or minus
+     * @param s A string from which we are delete unnecessary spaces
+     * @return String without valid spaces
+     */
+    public static String deleteSpaces (String s){
+        StringBuffer spDel = new StringBuffer();
+        for (int i = 0; i < s.length() ; i++) {
+            if ((s.charAt(i)!=' ') || (s.charAt(i)==' ' && (i==0 || i==s.length()-1)) || (s.charAt(i)==' ' && !(s.charAt(i+1)=='+' || s.charAt(i+1)=='-' || s.charAt(i-1)=='+' || s.charAt(i-1)=='-'))) spDel.append(s.charAt(i));
+        }
+        return spDel.toString();
     }
 
     /**
      * A tool with which to go over the collection we chose - Link List
+     *
      * @return Iterator of Linked List
      */
     @Override
@@ -59,29 +81,27 @@ public class Polynom implements Polynom_able{
 
     /**
      * @param m1 The monom that is added to a polynom
-     *The add function adds a monum to an existing polynomial as follows:
-     * First, the function checks whether a monom exists in a polynomial that has the same power as the givien monum,
-     * If so they are connected.
-     * If the function does not find an equally power, then add the monum to the polynomial using a linked list function
-     * and then the linked list is sent to the makeOrder function whose function is to sort the linked list.
-     * We note that the polynomial list necessarily will always be arranged from large to small and there will also be
-     * no repetition of the same power.
+     *           The add function adds a monum to an existing polynomial as follows:
+     *           First, the function checks whether a monom exists in a polynomial that has the same power as the givien monum,
+     *           If so they are connected.
+     *           If the function does not find an equally power, then add the monum to the polynomial using a linked list function
+     *           and then the linked list is sent to the makeOrder function whose function is to sort the linked list.
+     *           We note that the polynomial list necessarily will always be arranged from large to small and there will also be
+     *           no repetition of the same power.
      */
     @Override
     public void add(Monom m1) {
         Iterator<Monom> iter = this.iteretor();
-        boolean flag=true;
-        while (iter.hasNext()&&flag)
-        {
-            Monom nextMonom=iter.next();
-            if(nextMonom.get_power()==m1.get_power())
-            {
+        boolean flag = true;
+        while (iter.hasNext() && flag) {
+            Monom nextMonom = iter.next();
+            if (nextMonom.get_power() == m1.get_power()) {
                 nextMonom.add(m1);
                 this.deleteUnnecessaryZeros();
-                flag=false;
+                flag = false;
             }
         }
-        if(flag) {
+        if (flag) {
             polinomLL.add(m1);
             this.makeOrder();
 
@@ -89,12 +109,11 @@ public class Polynom implements Polynom_able{
     }
 
     /**
-     *  makeOrder The function sorts the Linken List.
-     *  This is done by the sorting function of the Linken List and the comparator we have defined
+     * makeOrder The function sorts the Linken List.
+     * This is done by the sorting function of the Linken List and the comparator we have defined
      */
-    public void  makeOrder( )
-    {
-        Comparator<Monom> c =new Monom_Comperator();
+    public void makeOrder() {
+        Comparator<Monom> c = new Monom_Comperator();
         this.polinomLL.sort(c);
         this.deleteUnnecessaryZeros();
     }
@@ -102,12 +121,10 @@ public class Polynom implements Polynom_able{
     /**
      * The function removes unnecessary zeros from the polynomial
      */
-    public void deleteUnnecessaryZeros()
-    {
+    public void deleteUnnecessaryZeros() {
         boolean hasValid = false;
         Iterator<Monom> iter = this.iteretor();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Monom m = iter.next();
             if (m.isZero() && (iter.hasNext() || hasValid))
                 iter.remove();
@@ -117,32 +134,30 @@ public class Polynom implements Polynom_able{
 
     /**
      * @param p1 The polynom that is added to a polynom on which the function works
-     * A function that connects one polynomial with another polynomial.as follows:
-     * Go over the polynomial you want to connect and add a monom monom to the desirable polynom.
-     *This is done thanks to the function that adds monom with polynom.
+     *           A function that connects one polynomial with another polynomial.as follows:
+     *           Go over the polynomial you want to connect and add a monom monom to the desirable polynom.
+     *           This is done thanks to the function that adds monom with polynom.
      */
     @Override
     public void add(Polynom_able p1) {
-        Iterator<Monom> iter =p1.iteretor();
-        while(iter.hasNext())
-        {
-            this.add (iter.next());
+        Iterator<Monom> iter = p1.iteretor();
+        while (iter.hasNext()) {
+            this.add(iter.next());
         }
     }
+
     /**
-     *Deep copy of Polynom_able
+     * Deep copy of Polynom_able
      */
     @Override
     public function copy() {
 
-        function toCopy=new Polynom();
+        function toCopy = new Polynom();
         Iterator<Monom> x = this.iteretor();
-        while(x.hasNext())
-        {
+        while (x.hasNext()) {
             Monom temp = x.next();
-            if(toCopy instanceof Polynom_able )
-            {
-                ((Polynom_able)toCopy).add(new Monom(temp));
+            if (toCopy instanceof Polynom_able) {
+                ((Polynom_able) toCopy).add(new Monom(temp));
             }
         }
         return toCopy;
@@ -152,22 +167,25 @@ public class Polynom implements Polynom_able{
      * @return String Which symbolizes the polynom
      * Prints polynom as follows: ax^b+...+ax^b
      */
-    public String toString()
-    {
+    public String toString() {
         String ans = "";
         Iterator<Monom> iter = this.iteretor();
         while (iter.hasNext()) {
             Monom m = iter.next();
-            if (m.get_coefficient()>=0) ans+="+";
-            ans+=m.toString();
+            if (m.get_coefficient() >= 0) ans += "+";
+            ans += m.toString();
         }
-        if (ans.charAt(0) == '+')ans= ans.substring(1);
+        if (ans.charAt(0) == '+') ans = ans.substring(1);
         return ans;
     }
-
+    /**
+     * @param s String that will become a object type function
+     * @return function type Polynom
+     * Action done on a Polynom But note that the Polynom will not change at any point but only a new object type function will be created from the string
+     */
     @Override
     public function initFromString(String s) {
-        function init=new Polynom(s);
+        function init = new Polynom(s);
         return init;
     }
 
@@ -178,20 +196,19 @@ public class Polynom implements Polynom_able{
      */
     @Override
     public double f(double x) {
-        double sum=0;
-        Iterator<Monom> iter =this.iteretor();
-        while (iter.hasNext())
-        {
-            Monom next=iter.next();
-            sum+=next.f(x);
+        double sum = 0;
+        Iterator<Monom> iter = this.iteretor();
+        while (iter.hasNext()) {
+            Monom next = iter.next();
+            sum += next.f(x);
         }
         return sum;
     }
 
     /**
      * @param m1 Is the monom with which we multiply the polynom on which the function works
-     * The function multiplies a polynomial by a monom.as follows:
-     * Pass the polynomial in the form of a monom-monom and multiply every monom that belongs to the polynom in the giveing monom
+     *           The function multiplies a polynomial by a monom.as follows:
+     *           Pass the polynomial in the form of a monom-monom and multiply every monom that belongs to the polynom in the giveing monom
      */
     @Override
     public void multiply(Monom m1) {
@@ -204,8 +221,8 @@ public class Polynom implements Polynom_able{
 
     /**
      * @param p1 The polynom that subtract from the polynom on which the function works
-     * The function substract polynoms.as follows:
-     * Multiplies the polynomial P1 by -1 and then add P1 to the polynom that needs to be subtracted from P1.
+     *           The function substract polynoms.as follows:
+     *           Multiplies the polynomial P1 by -1 and then add P1 to the polynom that needs to be subtracted from P1.
      */
     @Override
     public void substract(Polynom_able p1) {
@@ -217,9 +234,9 @@ public class Polynom implements Polynom_able{
 
     /**
      * @param p1 Is the polynom with which we multiply the polynom on which the function works
-     *The function multiplies a polynomial by another polynomial.as follows:
-     * Pass the polynom p1 in the form of a monom-monom and  multiply every monom that belongs to the polynom p1 in the giveing polynom
-     * Connecting the multiplication of monom in polynomial will be the desired result.
+     *           The function multiplies a polynomial by another polynomial.as follows:
+     *           Pass the polynom p1 in the form of a monom-monom and  multiply every monom that belongs to the polynom p1 in the giveing polynom
+     *           Connecting the multiplication of monom in polynomial will be the desired result.
      */
     @Override
     public void multiply(Polynom_able p1) {
@@ -227,7 +244,7 @@ public class Polynom implements Polynom_able{
         Iterator<Monom> iter = p1.iteretor();
         while (iter.hasNext()) {
             Polynom_able i = new Polynom(this.toString());
-            Monom m = new Monom( iter.next().toString());
+            Monom m = new Monom(iter.next().toString());
             if (!m.isZero()) {
                 i.multiply(m);
                 ans.add(i);
@@ -241,34 +258,45 @@ public class Polynom implements Polynom_able{
     /**
      * @param p1 The polynomial compare to the second polynomial
      * @return Boolean answer that says whether the polynomial is equal or not
-     *The function checks whether the polynomials are equal.as follows:
+     * The function checks whether the polynomials are equal.as follows:
      * Compare a monom in the first polynom to a monom in the second polynom if they are not equal then return false.
      * This is how all monomes are checked, if all are equal return true.
      */
     //complexFunctipn
     @Override
     public boolean equals(Object p1) {
-        if(p1 instanceof Monom){
-            Polynom p2 = new Polynom();
-            p2.add((Monom) p1);
-            return this.equals(p2);
-        }
-        else if(p1 instanceof Polynom)
+        if (p1 instanceof Polynom)
         {
-            Polynom p2=(Polynom)p1;
+            Polynom p2 = (Polynom) p1;
             boolean isEquals = true;
             Iterator<Monom> iter1 = this.iteretor();
             Iterator<Monom> iter2 = p2.iteretor();
-            while (iter1.hasNext() && iter2.hasNext()) {
+            while (iter1.hasNext() && iter2.hasNext() && isEquals) {
                 Monom m = iter1.next();
                 Monom n = iter2.next();
                 if (!m.equals(n)) isEquals = false;
             }
-            if(iter1.hasNext()||iter2.hasNext()) isEquals = false;
+            if (iter1.hasNext() || iter2.hasNext()) isEquals = false;
             return isEquals;
         }
-        return false;
+
+        else if (p1 instanceof Monom)
+        {
+            if (this.polinomLL.size() == 1) {
+                Monom p2 = (Monom) p1;
+                return p2.equals(this.polinomLL.getFirst());
+            }
+            else return false;
+        }
+        else if (p1 instanceof ComplexFunction)
+        {
+            ComplexFunction f = (ComplexFunction) p1;
+            return f.equals(this);
+        }
+
+            return false;
     }
+
 
     /**
      * @return A boolean expression that represents whether the polynomial is a zero polynomial or not
