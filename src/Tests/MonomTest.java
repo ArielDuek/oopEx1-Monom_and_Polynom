@@ -312,7 +312,7 @@ public class MonomTest {
     }
 
     /**
-     * Tests the function whether zero is working properly,
+     * Tests the function whether iszero working properly,
      * That is, the function can detect whether the monom is zero or not.
      */
     @Test
@@ -337,7 +337,7 @@ public class MonomTest {
     }
 
     /**
-     Checks whether the connection between two monomers is performed properly
+     Checks whether the connection between two monoms is performed properly
      */
     @Test
     public void add() {
@@ -575,7 +575,7 @@ public class MonomTest {
     }
 
     /**
-     * Checks whether the Equals function properly compares two monomers
+     * Checks whether the Equals properly compares monom and function
      */
     @Test
     public void testEquals() {
