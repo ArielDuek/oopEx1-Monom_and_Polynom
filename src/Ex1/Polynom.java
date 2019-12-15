@@ -29,7 +29,6 @@ public class Polynom implements Polynom_able {
      * A proper polynomial is the connection or subtraction of proper monomies
      * Incorrect input:
      * (3x^2+1),(3x^2+1)*(9x+11),-(7x+7x^5)....
-     *
      * @param s: is a string represents a Polynom
      */
     public Polynom(String s) {
@@ -70,45 +69,6 @@ public class Polynom implements Polynom_able {
     }
 
     /**
-     * A tool with which to go over the collection we chose - Link List
-     *
-     * @return Iterator of Linked List
-     */
-    @Override
-    public Iterator<Monom> iteretor() {
-        return polinomLL.iterator();
-    }
-
-    /**
-     * @param m1 The monom that is added to a polynom
-     *           The add function adds a monum to an existing polynomial as follows:
-     *           First, the function checks whether a monom exists in a polynomial that has the same power as the givien monum,
-     *           If so they are connected.
-     *           If the function does not find an equally power, then add the monum to the polynomial using a linked list function
-     *           and then the linked list is sent to the makeOrder function whose function is to sort the linked list.
-     *           We note that the polynomial list necessarily will always be arranged from large to small and there will also be
-     *           no repetition of the same power.
-     */
-    @Override
-    public void add(Monom m1) {
-        Iterator<Monom> iter = this.iteretor();
-        boolean flag = true;
-        while (iter.hasNext() && flag) {
-            Monom nextMonom = iter.next();
-            if (nextMonom.get_power() == m1.get_power()) {
-                nextMonom.add(m1);
-                this.deleteUnnecessaryZeros();
-                flag = false;
-            }
-        }
-        if (flag) {
-            polinomLL.add(m1);
-            this.makeOrder();
-
-        }
-    }
-
-    /**
      * makeOrder The function sorts the Linken List.
      * This is done by the sorting function of the Linken List and the comparator we have defined
      */
@@ -133,10 +93,48 @@ public class Polynom implements Polynom_able {
     }
 
     /**
+     * A tool with which to go over the collection we chose - Link List
+     * @return Iterator of Linked List
+     */
+    @Override
+    public Iterator<Monom> iteretor() {
+        return polinomLL.iterator();
+    }
+
+    /**
+     * @param m1 The monom that is added to a polynom
+     *The add function adds a monum to an existing polynomial as follows:
+     *First, the function checks whether a monom exists in a polynomial that has the same power as the givien monum,
+     *If so they are connected.
+     *If the function does not find an equally power, then add the monum to the polynomial using a linked list function
+     *and then the linked list is sent to the makeOrder function whose function is to sort the linked list.
+     *We note that the polynomial list necessarily will always be arranged from large to small and there will also be
+     *no repetition of the same power.
+     */
+    @Override
+    public void add(Monom m1) {
+        Iterator<Monom> iter = this.iteretor();
+        boolean flag = true;
+        while (iter.hasNext() && flag) {
+            Monom nextMonom = iter.next();
+            if (nextMonom.get_power() == m1.get_power()) {
+                nextMonom.add(m1);
+                this.deleteUnnecessaryZeros();
+                flag = false;
+            }
+        }
+        if (flag) {
+            polinomLL.add(m1);
+            this.makeOrder();
+
+        }
+    }
+
+    /**
      * @param p1 The polynom that is added to a polynom on which the function works
-     *           A function that connects one polynomial with another polynomial.as follows:
-     *           Go over the polynomial you want to connect and add a monom monom to the desirable polynom.
-     *           This is done thanks to the function that adds monom with polynom.
+     * A function that connects one polynomial with another polynomial.as follows:
+     * Go over the polynomial you want to connect and add a monom monom to the desirable polynom.
+     * This is done thanks to the function that adds monom with polynom.
      */
     @Override
     public void add(Polynom_able p1) {
@@ -207,8 +205,8 @@ public class Polynom implements Polynom_able {
 
     /**
      * @param m1 Is the monom with which we multiply the polynom on which the function works
-     *           The function multiplies a polynomial by a monom.as follows:
-     *           Pass the polynomial in the form of a monom-monom and multiply every monom that belongs to the polynom in the giveing monom
+     * The function multiplies a polynomial by a monom.as follows:
+     * Pass the polynomial in the form of a monom-monom and multiply every monom that belongs to the polynom in the giveing monom
      */
     @Override
     public void multiply(Monom m1) {
@@ -221,8 +219,8 @@ public class Polynom implements Polynom_able {
 
     /**
      * @param p1 The polynom that subtract from the polynom on which the function works
-     *           The function substract polynoms.as follows:
-     *           Multiplies the polynomial P1 by -1 and then add P1 to the polynom that needs to be subtracted from P1.
+     * The function substract polynoms.as follows:
+     * Multiplies the polynomial P1 by -1 and then add P1 to the polynom that needs to be subtracted from P1.
      */
     @Override
     public void substract(Polynom_able p1) {
@@ -234,9 +232,9 @@ public class Polynom implements Polynom_able {
 
     /**
      * @param p1 Is the polynom with which we multiply the polynom on which the function works
-     *           The function multiplies a polynomial by another polynomial.as follows:
-     *           Pass the polynom p1 in the form of a monom-monom and  multiply every monom that belongs to the polynom p1 in the giveing polynom
-     *           Connecting the multiplication of monom in polynomial will be the desired result.
+     *The function multiplies a polynomial by another polynomial.as follows:
+     *Pass the polynom p1 in the form of a monom-monom and  multiply every monom that belongs to the polynom p1 in the giveing polynom
+     *Connecting the multiplication of monom in polynomial will be the desired result.
      */
     @Override
     public void multiply(Polynom_able p1) {
@@ -256,11 +254,13 @@ public class Polynom implements Polynom_able {
     }
 
     /**
-     * @param p1 The polynomial compare to the second polynomial
+     * @param p1 The polynomial compare to function
      * @return Boolean answer that says whether the polynomial is equal or not
+     * if p1 is polynom:
      * The function checks whether the polynomials are equal.as follows:
      * Compare a monom in the first polynom to a monom in the second polynom if they are not equal then return false.
      * This is how all monomes are checked, if all are equal return true.
+     * if p1 is monom or complex function the comparison is done by their comparative function
      */
     //complexFunctipn
     @Override
@@ -296,7 +296,6 @@ public class Polynom implements Polynom_able {
 
             return false;
     }
-
 
     /**
      * @return A boolean expression that represents whether the polynomial is a zero polynomial or not
