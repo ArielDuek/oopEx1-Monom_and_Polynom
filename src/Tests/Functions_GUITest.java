@@ -3,7 +3,7 @@ package Tests;
 import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
-
+import static org.junit.Assert.*;
 import Ex1.ComplexFunction;
 import Ex1.Functions_GUI;
 import Ex1.Monom;
@@ -63,14 +63,46 @@ public class Functions_GUITest {
         //	fail("Not yet implemented");
     }
 
-    //@Test
-    void testInitFromFile() {
-        //	fail("Not yet implemented");
+    /**
+     *Checks that test InitFromFile work good
+     */
+    @Test
+    public void testInitFromFile() {
+        Functions_GUI x = (Functions_GUI)FunctionsFactory();
+        Functions_GUI like = new Functions_GUI();
+        try {
+            like.initFromFile("function_file2.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int i = 0; i <x.size() ; i++) {
+            assertEquals(x.getcf(i).toString(),like.getcf(i).toString());
+        }
     }
 
-    //@Test
-    void testSaveToFile() {
-
+    /**
+     *Checks that test testSaveToFile work good
+     */
+    @Test
+    public void testSaveToFile() {
+        Functions_GUI f = (Functions_GUI)FunctionsFactory();
+        try {
+            f.saveToFile("function_file.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        Functions_GUI f2= new Functions_GUI();
+        try {
+            f2.initFromFile("function_file2.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        for (int i = 0; i <f2.size() ; i++) {
+            assertEquals(f.getcf(i).toString(),f2.getcf(i).toString());
+        }
 
     }
 
