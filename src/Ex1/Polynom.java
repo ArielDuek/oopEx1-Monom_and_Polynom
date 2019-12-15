@@ -372,6 +372,7 @@ public class Polynom implements Polynom_able {
      * for more info : https://en.wikipedia.org/wiki/Trapezoidal_rule
      */
     @Override
+
     public double area(double x0, double x1, double eps) {
         if (eps<0) throw new RuntimeException ("eps need to be positive");
         double area = 0 , x0eps = x0 + eps;
@@ -387,4 +388,5 @@ public class Polynom implements Polynom_able {
         }
         return area;
     }
+
 }
