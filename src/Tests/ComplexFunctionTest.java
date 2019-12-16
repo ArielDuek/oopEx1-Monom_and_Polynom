@@ -433,6 +433,7 @@ public class ComplexFunctionTest {
             ans[i] = arrComFun[i].toString();
             function a = x.initFromString(ans[i]);
             assertEquals(arrComFun[i], a);
+            assertEquals(arrComFun[i],arrComFun[i]);
         }
     }
 

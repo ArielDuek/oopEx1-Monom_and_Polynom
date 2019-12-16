@@ -487,7 +487,6 @@ public class ComplexFunction implements complex_function {
      */
     public boolean equals(Object c)
     {
-        try {
             function cFunction = (function) c;
             boolean ans = true;
             double left = 0;
@@ -513,8 +512,4 @@ public class ComplexFunction implements complex_function {
             }
             return ans;
         }
-        catch (Exception e){
-            return false;
-        }
     }
-}
