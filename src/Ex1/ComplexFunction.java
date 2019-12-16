@@ -1,6 +1,13 @@
 package Ex1;
 
-
+/**
+ * This class represents a Complex Function, with the operators: plus, mul, div, max, min, comp.
+ * see: https://en.wikipedia.org/wiki/Complex_analysis#Complex_functions
+ * The class implements complex_function that extend function and represent with the shape: OP(left,right).
+ * OP-> the operator that we are using,
+ * left-> the first function,
+ * right-> the second function.
+ */
 public class ComplexFunction implements complex_function {
     public static final double EPSILON = 0.0000001;
     private function left;
@@ -15,19 +22,25 @@ public class ComplexFunction implements complex_function {
         this.right = null;
         this.op = Operation.None;
     }
+
+    /**
+     * @param op     string that marks a mathematical operation (Operation)
+     * @param fLeft  intended to be a left function
+     * @param fRight intended to be a right function
+     * will send the values to constructor of -> ComplexFunction(String op, function fleft, function fright)
+     */
     public ComplexFunction(Operation op, function fLeft, function fRight)
     {
         this(op.toString(), fLeft,  fRight);
-
     }
 
     /**
-     * @param op     string that marks a mathematical operation
+     * @param op     string that marks a mathematical operation (String)
      * @param fLeft  intended to be a left function
      * @param fRight intended to be a right function
      */
     public ComplexFunction(String op, function fLeft, function fRight) {
-        op=opFromString(op);
+        op = opFromString(op);
         op = op.toLowerCase();
         switch (op) {
 
@@ -93,7 +106,7 @@ public class ComplexFunction implements complex_function {
     }
 
     /**
-     * Copy constructor.
+     * (Shallow) Copy constructor.
      * @param original The ComplexFunction object that needs to be copied
      */
     public ComplexFunction(ComplexFunction original)
@@ -103,8 +116,14 @@ public class ComplexFunction implements complex_function {
         this.right=original.right();
     }
 
+
+    /**
+     * this method will add selected function f to this function
+     * @param f the function that will be added to this function
+     */
     @Override
-    public void plus(function f1) {
+    public void plus(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -122,8 +141,13 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * this method will multiply selected function f with this function
+     * @param f the function that will be multiplied with this function
+     */
     @Override
-    public void mul(function f1) {
+    public void mul(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -141,8 +165,13 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * this method will divid selected function f with this function
+     * @param f the function that will be divided with this function
+     */
     @Override
-    public void div(function f1) {
+    public void div(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -160,8 +189,13 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * this method will return to this function the maximum of the selected function f and this function
+     * @param f the function that will be compared with this function - to compute the maximum.
+     */
     @Override
-    public void max(function f1) {
+    public void max(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -179,8 +213,13 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * this method will return to this function the minimum of the selected function f and this function
+     * @param f the function that will be compared with this function - to compute the minimum.
+     */
     @Override
-    public void min(function f1) {
+    public void min(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -198,8 +237,13 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * This method wrap the function f with this function: this.f(f1(x)) and return to this function
+     * @param f the function that will be wraped on this function.
+     */
     @Override
-    public void comp(function f1) {
+    public void comp(function f) {
+        function f1 = f.copy();
         if(f1==null)
         {
             throw new RuntimeException("the functiom cant be null");
@@ -240,6 +284,10 @@ public class ComplexFunction implements complex_function {
         return this.op;
     }
 
+    /**
+     * @return String Which symbolizes the ComplexFunction
+     * Prints ComplexFunction as follows: op(function,function).
+     */
     public String toString()
     {
         if(this.op==Operation.None)
@@ -253,6 +301,11 @@ public class ComplexFunction implements complex_function {
             return s.toString();
         }
     }
+
+    /**
+     * @return String Which symbolizes the operator of this ComplexFunction
+     * Prints operator (max, min, plus, div, mul, comp, error)
+     */
     public String opToString()
     {
         switch (this.op)
@@ -275,6 +328,11 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * @return String Which symbolizes the operator of this ComplexFunction
+     * this helper method return String Op with given String that represent one of the operators.
+     * Prints operator (max, min, plus, div, mul, comp, error)
+     */
     public String opFromString(String s)
     {
         switch (s)
@@ -311,6 +369,11 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * @param x The X value at the point
+     * @return double Which symbolizes the Y value
+     * The function calculates the Y value at a point in this ComplexFunction.
+     */
     @Override
     public double f(double x) {
         switch (this.op)
@@ -324,12 +387,10 @@ public class ComplexFunction implements complex_function {
             case Plus:
                 return (this.left.f(x))+(this.right.f(x));
             case Divid: {
-//                return (this.left.f(x)) / (this.right.f(x));
                 if (this.right.f(x) == 0)
                     throw new ArithmeticException("It is not allowed to divide by 0");
                 else {
                     return (this.left.f(x)) / (this.right.f(x));
-
                 }
             }
             case Times:
@@ -338,10 +399,14 @@ public class ComplexFunction implements complex_function {
                 return this.left.f(x);
             default:
                 return 0;
-
         }
     }
 
+    /**
+     * @param s String that will become a object type function
+     * @return function type ComplexFunction
+     * Action done on a ComplexFunction But note that the ComplexFunction will not change at any point but only a new object type ComplexFunction will be created from the string
+     */
     @Override
     public function initFromString(String s) {
         deleteSpaces(s);
@@ -385,6 +450,10 @@ public class ComplexFunction implements complex_function {
         return ans;
     }
 
+    /**
+     * this helper method remove from a given String the spaces -" " that show before or after the symbol '+'/'-'
+     * @param s the given String to romove the spaces from.
+     */
     public  void  deleteSpaces (String s){
         StringBuffer spDel = new StringBuffer();
         for (int i = 0; i < s.length() ; i++) {
@@ -393,7 +462,10 @@ public class ComplexFunction implements complex_function {
         s=spDel.toString();
     }
 
-
+    /**
+     * (deep) Copy constructor.
+     * this method return a copy of The ComplexFunction object that needs to be copied
+     */
     @Override
     public function copy() {
         if(this instanceof ComplexFunction)
@@ -408,29 +480,41 @@ public class ComplexFunction implements complex_function {
         }
     }
 
+    /**
+     * this method check if given Object c ios equals to this ComplexFunction
+     * @param c the given Object that need to be compered with this ComplexFunction
+     * @return boolean value- True if equals and False if not equals.
+     */
     public boolean equals(Object c)
     {
-        function cFunction=(function)c;
-        boolean ans=true;
-        double left=0;
-        double right=0;
-
-        for (int i = -80; i <=80 &&ans; i++) {
-            left=this.f(i);
-            right=cFunction.f(i);
-            if(Math.abs(left-right)>EPSILON)
-                ans=false;
-            if(!ans)
-            {
-                left=(double)Math.round((this.f(i)*10000000000000000d)/10000000000000000d);
-                right=(double)Math.round((cFunction.f(i)*10000000000000000d)/10000000000000000d);
-                if(Math.abs(left-right)>EPSILON)
-                    ans=false;
-                else
-                    ans=true;
+        try {
+            function cFunction = (function) c;
+            boolean ans = true;
+            double left = 0;
+            double right = 0;
+            for (int i = -80; i <= 80 && ans; i++) {
+                try {
+                    left = this.f(i);
+                    right = cFunction.f(i);
+                    if (Math.abs(left - right) > EPSILON)
+                        ans = false;
+                    if (!ans) {
+                        left = (double) Math.round((this.f(i) * 10000000000000000d) / 10000000000000000d);
+                        right = (double) Math.round((cFunction.f(i) * 10000000000000000d) / 10000000000000000d);
+                        if (Math.abs(left - right) > EPSILON)
+                            ans = false;
+                        else
+                            ans = true;
+                    }
+                }
+                catch (Exception e){
+                    continue;
+                }
             }
+            return ans;
         }
-        return ans;
+        catch (Exception e){
+            return false;
+        }
     }
-
 }

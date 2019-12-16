@@ -4,9 +4,7 @@ import java.util.Comparator;
 /**
  * This class represents a simple "Monom" of shape ax^b, where a is a real number and a is an integer (summed a none negative),
  * see: https://en.wikipedia.org/wiki/Monomial 
- * The class implements function and support simple operations as: construction, value at x, derivative, add and multiply. 
- * @author Boaz
- *
+ * The class implements function and support simple operations as: construction, value at x, derivative, add and multiply.
  */
 public class Monom<STRBKJ> implements function {
     public static final Monom ZERO = new Monom(0, 0);

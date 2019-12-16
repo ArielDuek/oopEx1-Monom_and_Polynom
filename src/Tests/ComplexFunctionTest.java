@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 public class ComplexFunctionTest {
     static ComplexFunction[] arrComFun = new ComplexFunction[18];
     static Polynom[] arrPol =new Polynom[15];
-    static ComplexFunction[] Random = new ComplexFunction[30];
     static String[] Op = {"mul","min","max","comp","plus","div"};
 
     static function f0;
@@ -38,7 +37,7 @@ public class ComplexFunctionTest {
         arrPol[13] = new Polynom("15x^4-14X^5");
         arrPol[14] = new Polynom("x^2+x^4-X^3-2x^2");
 
-        //Build the Polynoms with the help of the Polynom string constructor
+        //Build the ComplexFunctions with the help of the ComplexFunction string constructor
         arrComFun[0] = new ComplexFunction("plus",arrPol[0],arrPol[1]);
         arrComFun[1] = new ComplexFunction("plus",arrPol[2],arrPol[3]);
         arrComFun[2] = new ComplexFunction("plus",arrPol[4],arrPol[5]);
@@ -57,13 +56,6 @@ public class ComplexFunctionTest {
         arrComFun[15] = new ComplexFunction("mul",arrPol[14],arrPol[1]);
         arrComFun[16] = new ComplexFunction("mul",arrPol[12],arrPol[7]);
         arrComFun[17] = new ComplexFunction("mul",arrPol[5],arrPol[9]);
-
-        for (int i = 0; i < 30; i++) {
-            String op = Op[(int)Math.random()*6];
-            function left = arrPol[(int)Math.random()*15];
-            function right = arrPol[(int)Math.random()*15];
-            Random[i]=new ComplexFunction(op,left,right);
-        }
     }
 
     /**
@@ -149,7 +141,6 @@ public class ComplexFunctionTest {
         ComplexFunction cMins= new ComplexFunction("Min",f0,f1);
         ComplexFunction cComp= new ComplexFunction("Comp",f0,f1);
 
-
         ComplexFunction[] arrC={c,cPlus,cTimes,cDivid,cMax,cMins,cComp};
         for (int i = 0; i <arrC.length ; i++) {
             ComplexFunction cCopy= new ComplexFunction(arrC[i]);
@@ -159,6 +150,9 @@ public class ComplexFunctionTest {
         }
     }
 
+    /**
+     * Checks that the plus method works properly
+     */
     @Test
     public void plus() {
         arrComFun[5].plus(arrComFun[14]);
@@ -180,21 +174,14 @@ public class ComplexFunctionTest {
         assertEquals("plus(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
         assertEquals("plus(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
 
-
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        assertEquals("2.0x^2+4.0",c0.left().toString());
-//        assertNull(c0.right());
-//        assertEquals("None",c0.getOp().toString());
-//
-//        c0.plus(f1);
-//        assertEquals("Plus",c0.getOp().toString());
-//        assertEquals("plus(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
-
-
+        //check if it is possible to add a ComplexFunction to himself
+        arrComFun[0].plus(arrComFun[0]);
+        assertEquals(arrComFun[0].toString(),"plus(plus(-89.0,4.0x),plus(-89.0,4.0x))");
 }
 
+    /**
+     * Checks that the mul method works properly
+     */
     @Test
     public void mul() {
         arrComFun[5].mul(arrComFun[14]);
@@ -217,14 +204,14 @@ public class ComplexFunctionTest {
         assertEquals("mul(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
         assertEquals("mul(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
 
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        c0.mul(f1);
-//        assertEquals("Times",c0.getOp().toString());
-//        assertEquals("mul(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
+        //check if it is possible to multiply a ComplexFunction with himself
+        arrComFun[9].mul(arrComFun[9]);
+        assertEquals(arrComFun[9].toString(),"mul(comp(-5.0x^2+6.0x-17.0,4.0x^4),comp(-5.0x^2+6.0x-17.0,4.0x^4))");
     }
 
+    /**
+     * Checks that the div method works properly
+     */
     @Test
     public void div() {
         arrComFun[5].div(arrComFun[14]);
@@ -246,14 +233,14 @@ public class ComplexFunctionTest {
         assertEquals("div(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
         assertEquals("div(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
 
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        c0.div(f1);
-//        assertEquals("Divid",c0.getOp().toString());
-//        assertEquals("div(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
+//check if it is possible to divid a ComplexFunction with himself
+        arrComFun[4].div(arrComFun[4]);
+        assertEquals(arrComFun[4].toString(),"div(div(max(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2),plus(-89.0,4.0x)),div(max(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2),plus(-89.0,4.0x)))");
     }
 
+    /**
+     * Checks that the max method works properly
+     */
     @Test
     public void max() {
         arrComFun[5].max(arrComFun[14]);
@@ -275,14 +262,14 @@ public class ComplexFunctionTest {
         assertEquals("max(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
         assertEquals("max(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
 
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        c0.max(f1);
-//        assertEquals("Max",c0.getOp().toString());
-//        assertEquals("max(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
+//check if it is possible to compare a ComplexFunction with himself
+        arrComFun[7].max(arrComFun[7]);
+        assertEquals(arrComFun[7].toString(),"max(max(min(1.0x^4-1.0x^3-1.0x^2,-5.0x^2+6.0x-17.0),div(77.0x^4,3.0x)),max(min(1.0x^4-1.0x^3-1.0x^2,-5.0x^2+6.0x-17.0),div(77.0x^4,3.0x)))");
     }
 
+    /**
+     * Checks that the min method works properly
+     */
     @Test
     public void min() {
         arrComFun[5].min(arrComFun[14]);
@@ -304,56 +291,76 @@ public class ComplexFunctionTest {
         assertEquals("min(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
         assertEquals("min(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
 
-
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        c0.min(f1);
-//        assertEquals("Min",c0.getOp().toString());
-//        assertEquals("min(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
+//check if it is possible to compare a ComplexFunction with himself
+        arrComFun[2].min(arrComFun[2]);
+        assertEquals(arrComFun[2].toString(),"min(min(plus(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0),comp(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0)),min(plus(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0),comp(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0)))");
     }
 
+    /**
+     * Checks that the comp method works properly
+     */
     @Test
     public void comp() {
-            arrComFun[5].comp(arrComFun[14]);
-            arrComFun[2].comp(arrComFun[10]);
-            arrComFun[4].comp(arrComFun[0]);
-            arrComFun[17].comp(arrComFun[12]);
-            arrComFun[8].comp(arrComFun[9]);
-            arrComFun[3].comp(arrComFun[11]);
-            arrComFun[7].comp(arrComFun[13]);
-            arrComFun[1].comp(arrComFun[15]);
-            arrComFun[16].comp(arrComFun[6]);
-        assertEquals("comp(max(77.0x^4,3.0x),div(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[5].toString());
-        assertEquals("comp(plus(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0),comp(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0))",arrComFun[2].toString());
-        assertEquals("comp(max(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2),plus(-89.0,4.0x))",arrComFun[4].toString());
-        assertEquals("comp(mul(2.0x^4-6.0x^2-7.0,1.0x^3+1.0x^2),div(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2))",arrComFun[17].toString());
-        assertEquals("comp(min(-89.0,4.0x),comp(-5.0x^2+6.0x-17.0,4.0x^4))",arrComFun[8].toString());
-        assertEquals("comp(max(-1.0x^2,777.0),comp(-1.0x^2,777.0))",arrComFun[3].toString());
-        assertEquals("comp(min(1.0x^4-1.0x^3-1.0x^2,-5.0x^2+6.0x-17.0),div(77.0x^4,3.0x))",arrComFun[7].toString());
-        assertEquals("comp(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))",arrComFun[1].toString());
-        assertEquals("comp(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))",arrComFun[16].toString());
+        arrComFun[5].comp(arrComFun[14]);
+        arrComFun[2].comp(arrComFun[10]);
+        arrComFun[4].comp(arrComFun[0]);
+        arrComFun[17].comp(arrComFun[12]);
+        arrComFun[8].comp(arrComFun[9]);
+        arrComFun[3].comp(arrComFun[11]);
+        arrComFun[7].comp(arrComFun[13]);
+        arrComFun[1].comp(arrComFun[15]);
+        arrComFun[16].comp(arrComFun[6]);
+        assertEquals("comp(max(77.0x^4,3.0x),div(9.0x^7,-14.0x^5+15.0x^4))", arrComFun[5].toString());
+        assertEquals("comp(plus(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0),comp(3.0x^5+5.0x^3+4.0x+23.0,2.0x^4-6.0x^2-7.0))", arrComFun[2].toString());
+        assertEquals("comp(max(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2),plus(-89.0,4.0x))", arrComFun[4].toString());
+        assertEquals("comp(mul(2.0x^4-6.0x^2-7.0,1.0x^3+1.0x^2),div(1.0x^6-1.0x^5-1.0x^4-1.0x^3-1.0x^2-1.0x,1.0x^3+1.0x^2))", arrComFun[17].toString());
+        assertEquals("comp(min(-89.0,4.0x),comp(-5.0x^2+6.0x-17.0,4.0x^4))", arrComFun[8].toString());
+        assertEquals("comp(max(-1.0x^2,777.0),comp(-1.0x^2,777.0))", arrComFun[3].toString());
+        assertEquals("comp(min(1.0x^4-1.0x^3-1.0x^2,-5.0x^2+6.0x-17.0),div(77.0x^4,3.0x))", arrComFun[7].toString());
+        assertEquals("comp(plus(-5.0x^2+6.0x-17.0,4.0x^4),mul(1.0x^4-1.0x^3-1.0x^2,4.0x))", arrComFun[1].toString());
+        assertEquals("comp(mul(9.0x^7,777.0),min(9.0x^7,-14.0x^5+15.0x^4))", arrComFun[16].toString());
 
-//        ComplexFunction c0= new ComplexFunction(f0);
-//        c0.comp(f1);
-//        assertEquals("Comp",c0.getOp().toString());
-//        assertEquals("comp(2.0x^2+4.0,8.0x^2+6.0)",c0.toString());
-//        assertNotNull(c0.left());
-//        assertNotNull(c0.right());
+//check if it is possible to compare a ComplexFunction with himself
+        arrComFun[6].comp(arrComFun[6]);
+        assertEquals(arrComFun[6].toString(), "comp(min(9.0x^7,-14.0x^5+15.0x^4),min(9.0x^7,-14.0x^5+15.0x^4))");
     }
 
+    /**
+     * Checks that the left method works properly and return the function left of this ComplexFunction.
+     */
     @Test
     public void left() {
+        Polynom[] ans = {arrPol[0],arrPol[2],arrPol[4],arrPol[6],arrPol[8],arrPol[10],arrPol[12],arrPol[14],arrPol[0],arrPol[2],arrPol[4],arrPol[6],arrPol[8],arrPol[10],arrPol[12],arrPol[14],arrPol[12],arrPol[5]};
+        for (int i = 0; i < 18; i++) {
+            assertEquals(arrComFun[i].left(),ans[i]);
+        }
     }
 
+    /**
+     * Checks that the right method works properly and return the function fight of this ComplexFunction.
+     */
     @Test
     public void right() {
+        Polynom[] ans = {arrPol[1],arrPol[3],arrPol[5],arrPol[7],arrPol[9],arrPol[11],arrPol[13],arrPol[2],arrPol[1],arrPol[3],arrPol[5],arrPol[7],arrPol[9],arrPol[11],arrPol[13],arrPol[1],arrPol[7],arrPol[9]};
+        for (int i = 0; i < 18; i++) {
+            assertEquals(arrComFun[i].right(),ans[i]);
+        }
     }
 
+    /**
+     * Checks that the getOp method works properly and return the Operation of this ComplexFunction.
+     */
     @Test
     public void getOp() {
+        Operation[] ans = {Operation.Plus,Operation.Max,Operation.Min,Operation.Comp,Operation.Divid,Operation.Times};
+        for (int i = 0; i < 18; i++) {
+            assertEquals(arrComFun[i].getOp(),ans[i/3]);
+        }
     }
 
+    /**
+     *Checks whether function f returns the correct Y value to X values
+     */
     @Test
     public void f() {
         try {
@@ -363,9 +370,9 @@ public class ComplexFunctionTest {
             function inited2 = new ComplexFunction();
             function a = inited1.initFromString(toInit1);
             function b = inited2.initFromString(toInit2);
-            double ans1 = 5.6;
+            double ans1 = 1676.6;
             double ans2 = (4.0 / -6.0) + 2;
-            double fx1 = a.f(2);
+            double fx1 = a.f(7);
             double fx2 = b.f(3);
             assertEquals(ans1, fx1, Monom.EPSILON);
             assertEquals(ans2, fx2, Monom.EPSILON);
@@ -376,39 +383,57 @@ public class ComplexFunctionTest {
         }
     }
 
+    /**
+     * Checks that the initFromString method works properly and return the function of this String.
+     */
     @Test
     public void initFromStringtest() {
-        String toInit = "plus(div(9.0x^7,-14.0x^5+15.0x^4),1.0x^2)";
+        String []toInit = {"plus(div(9.0x^7,-14.0x^5+15.0x^4),1.0x^2)","comp(max(-1.0x^2,777.0),comp(-1.0x^2,777.0))","div(max(77.0x^4,3.0x),div(9.0x^7,-14.0x^5+15.0x^4))"};
         function inited = new ComplexFunction();
-        function a = inited.initFromString(toInit);
-        assertEquals(a.toString(),toInit);
+        for (int i = 0; i < toInit.length; i++) {
+            function a = inited.initFromString(toInit[i]);
+            assertEquals(a.toString(),toInit[i]);
+        }
     }
 
+    /**
+     * Checks that the copy method works properly and return a copy of this function.
+     */
     @Test
     public void copy() {
+        function[]copyed = new ComplexFunction[arrComFun.length];
+        Polynom toAdd = new Polynom("7x^3 +5x^2 - 4x");
+        for (int i = 0; i < arrComFun.length ; i++) {
+            copyed[i]=arrComFun[i].copy();
+            assertEquals(arrComFun[i].toString(),copyed[i].toString());
+            arrComFun[i].plus(toAdd);
+            assertNotEquals(arrComFun[i].toString(),copyed[i].toString());
+        }
     }
 
-
+    /**
+     * Checks that the toString method works properly and return a String of this function.
+     */
     @Test
-    public void TtoString() {
+    public void toStringTest() {
         ComplexFunction cPlus= new ComplexFunction("plus",f0,f1);
         assertEquals("plus(2.0x^2+4.0,8.0x^2+6.0)",cPlus.toString());
         cPlus.plus(f0);
         assertEquals("plus(plus(2.0x^2+4.0,8.0x^2+6.0),2.0x^2+4.0)",cPlus.toString());
-        System.out.println(cPlus.toString());
-        ComplexFunction cf =new ComplexFunction (new Polynom("x^2+3"));
-        System.out.println(cf.toString());
     }
 
+    /**
+     * Checks whether the Equals properly compares ComplexFunction and function
+     */
     @Test
     public void equals() {
-        function f0=new Monom("2x");
-        function f1=new Monom("x");
-        function f2=new Monom("x");
-        ComplexFunction c = new ComplexFunction(f0);
-        ComplexFunction c1 = new ComplexFunction("plus",f1,f2);
-        assertTrue(c.equals(c1));
-
+        String[]ans = new String[arrComFun.length];
+        function x = new ComplexFunction();
+        for (int i = 0; i < arrComFun.length ; i++) {
+            ans[i] = arrComFun[i].toString();
+            function a = x.initFromString(ans[i]);
+            assertEquals(arrComFun[i], a);
+        }
     }
 
 }
