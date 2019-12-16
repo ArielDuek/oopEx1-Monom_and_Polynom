@@ -15,7 +15,9 @@ public class ComplexFunction implements complex_function {
     private Operation op;
 
     /**
-     * A definitive constructor that initializes both functions to be Null and the operator to be None
+     * A default constructor that initializes both functions to be Null and the operator to be None
+     * although it is forbidden to initialize the right-hand side at null when the operator is None, so the use of this
+     * constructor is for **programmers only**.
      */
     public ComplexFunction() {
         this.left = null;
@@ -38,6 +40,9 @@ public class ComplexFunction implements complex_function {
      * @param op     string that marks a mathematical operation (String)
      * @param fLeft  intended to be a left function
      * @param fRight intended to be a right function
+     * The constructor works as follows:
+     * Identifies the desired operator and initializes all the respective parameters.
+     * Note that if the user gives the function the Operators: None or Error the constructor prints an RuntimeException.
      */
     public ComplexFunction(String op, function fLeft, function fRight) {
         op = opFromString(op);
@@ -87,8 +92,8 @@ public class ComplexFunction implements complex_function {
             break;
 
             default:
-                System.out.println("ERR:The operation is invalid");
-                break;
+               throw new RuntimeException("ERR:The operation is invalid");
+
 
         }
 
@@ -119,6 +124,8 @@ public class ComplexFunction implements complex_function {
 
     /**
      * this method will add selected function f to this function
+     * Note that we copy the function accepted by the method and so if the original function changes it will not
+     * change in the complexFunction  also if f is null the software throws an exception.
      * @param f the function that will be added to this function
      */
     @Override
@@ -143,6 +150,8 @@ public class ComplexFunction implements complex_function {
 
     /**
      * this method will multiply selected function f with this function
+     * Note that we copy the function accepted by the method and so if the original function changes it will not change
+     * in the complex function  also if f is null the software throws an exception.
      * @param f the function that will be multiplied with this function
      */
     @Override
@@ -167,6 +176,8 @@ public class ComplexFunction implements complex_function {
 
     /**
      * this method will divid selected function f with this function
+     * Note that we copy the function accepted by the method and so if the original function changes it will not change
+     * in the complex function  also if f is null the software throws an exception.
      * @param f the function that will be divided with this function
      */
     @Override
@@ -190,7 +201,9 @@ public class ComplexFunction implements complex_function {
     }
 
     /**
-     * this method will return to this function the maximum of the selected function f and this function
+     * this method will return to this function the maximum of the selected function f and this function.
+     * Note that we copy the function accepted by the method and so if the original function changes it will not change
+     * in the complex function also if f is null the software throws an exception.
      * @param f the function that will be compared with this function - to compute the maximum.
      */
     @Override
@@ -239,6 +252,8 @@ public class ComplexFunction implements complex_function {
 
     /**
      * This method wrap the function f with this function: this.f(f1(x)) and return to this function
+     * Note that we copy the function accepted by the method and so if the original function changes it will not change
+     * in the complex function also if f is null the software throws an exception.
      * @param f the function that will be wraped on this function.
      */
     @Override
@@ -403,6 +418,10 @@ public class ComplexFunction implements complex_function {
     }
 
     /**
+     * The function gets a string and deletes spaces before and after plus or minus using deleteSpaces, and checks if the string is of the form "op (*, *)"
+     * If so, it will find the comma indexing time using the mainComma utility and recursively send the before and after comma to initfromstring and build complexFunction from them.
+     * And if not from this form will send to the initfromstring of a polynomial.
+     * And so a complex function is created that the function returns
      * @param s String that will become a object type function
      * @return function type ComplexFunction
      * Action done on a ComplexFunction But note that the ComplexFunction will not change at any point but only a new object type ComplexFunction will be created from the string
@@ -464,7 +483,7 @@ public class ComplexFunction implements complex_function {
 
     /**
      * (deep) Copy constructor.
-     * this method return a copy of The ComplexFunction object that needs to be copied
+     * This method return function object that is a copy of The ComplexFunction object that needs to be copied
      */
     @Override
     public function copy() {
@@ -481,7 +500,12 @@ public class ComplexFunction implements complex_function {
     }
 
     /**
-     * this method check if given Object c ios equals to this ComplexFunction
+     * this method check if given Object c is equals to this ComplexFunction
+     * The test is done by checking whether within a certain number range the two functions return the same Y value when
+     * both have the same X value.If one of the values returns the function FALSE then another check is made if 16 digits
+     * after the point are equal, then the test continues. This is all wrapped up in try..catch because if one of the
+     * values resets one of the functions and causes a divide by 0 the test will not stop. We will note that if it is
+     * precisely this value that indicates that our functions are not worth our function, you will not be able to recognize them.
      * @param c the given Object that need to be compered with this ComplexFunction
      * @return boolean value- True if equals and False if not equals.
      */
