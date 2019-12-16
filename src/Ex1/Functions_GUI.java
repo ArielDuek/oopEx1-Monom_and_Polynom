@@ -13,8 +13,14 @@ import java.util.Scanner;
 public class Functions_GUI implements functions {
     private static Object Range;
     public LinkedList<function> listOfComplexF=new LinkedList();
-     static ComplexFunction c =new ComplexFunction();
+    static ComplexFunction c =new ComplexFunction();
     public static Color[] Colors = {Color.blue, Color.cyan, Color.MAGENTA, Color.ORANGE, Color.red, Color.GREEN, Color.PINK};
+
+    /**
+     * @param file - the file name
+     * @throws IOException
+     *A function that puts ComplexFunction functions from a file into a list
+     */
     @Override
     public void initFromFile(String file) throws IOException {
         File theFile=new File(file);
@@ -25,21 +31,36 @@ public class Functions_GUI implements functions {
         }
     }
 
+    /**
+     * @param file - the file name
+     * @throws IOException
+     * A function that saves ComplexFunction functions to an file from a list
+     */
     @Override
     public void saveToFile(String file) throws IOException {
         FileWriter w = new FileWriter(file);
         Iterator<function> iter=this.listOfComplexF.iterator();
         StringBuilder s=new StringBuilder();
-        s.append("\n");
         while (iter.hasNext())
         {
-           s.append(iter.next()+"\n");
+            s.append(iter.next()+"\n");
         }
         w.write(s.toString());
         w.close();
     }
+
+    /**
+     * @param width - the width of the window - in pixels
+     * @param height - the height of the window - in pixels
+     * @param rx - the range of the horizontal axis
+     * @param ry - the range of the vertical axis
+     * @param resolution - the number of samples with in rx: the X_step = rx/resulution
+     * Constructor that gets parametric.
+     * A function that draws a collection of type function - complex function
+     */
     @Override
     public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
+
         int n=resolution;
         StdDraw.setCanvasSize(width,height);
         int size=this.listOfComplexF.size();
@@ -58,19 +79,10 @@ public class Functions_GUI implements functions {
         StdDraw.setXscale(rx.get_min(),rx.get_max());
         StdDraw.setYscale(ry.get_min(),ry.get_max());
 
-        for (int i = 0; i <size ; i++) {
-            int c =i%Colors.length;
-            StdDraw.setPenColor(Colors[c]);
-            System.out.println(i+")"+Colors[i]+"f(x)="+this.listOfComplexF.get(i));
-            for (int j = 0; j < n; j++) {
-                StdDraw.line(x[j],yy[i][j],x[j+1],yy[i][j+1]);
-            }
-        }
-
         StdDraw.setPenColor(Color.LIGHT_GRAY);
         //cols
         for (double i = rx.get_min(); i <rx.get_max() ; i++) {
-             StdDraw.line(i,ry.get_max(),i,ry.get_min());
+            StdDraw.line(i,ry.get_max(),i,ry.get_min());
         }
 
         //line
@@ -80,15 +92,15 @@ public class Functions_GUI implements functions {
 
         StdDraw.setPenColor(Color.BLACK);
         StdDraw.setPenRadius(0.005);
-        //ax
+        //X axis
         StdDraw.line(rx.get_min(),0,rx.get_max(),0);
-        //ay
+        //Y axis
         StdDraw.line(0,ry.get_min(),0,ry.get_max());
 
         StdDraw.setPenRadius(0.008);
         StdDraw.setFont(new Font(null,Font.BOLD,15));
-        //numbers on x
 
+        //numbers on x
         for (int i =(int) ry.get_min(); i <ry.get_max() ; i++) {
             if(i==0)
                 continue;
@@ -102,13 +114,34 @@ public class Functions_GUI implements functions {
             StdDraw.text(i,-0.4,Integer.toString(i));
         }
 
+        StdDraw.setPenRadius(0.003);
+        for (int i = 0; i <size ; i++) {
+            int c =i%Colors.length;
+            StdDraw.setPenColor(Colors[c]);
+            System.out.println(i+")"+Colors[i]+"f(x)="+this.listOfComplexF.get(i));
+            for (int j = 0; j < n; j++) {
+                StdDraw.line(x[j],yy[i][j],x[j+1],yy[i][j+1]);
+            }
+        }
+
     }
+
+    /**
+     * A default constructor that draws a collection of type function - complex function
+     * The default constructor uses a constructor that gets parametric.
+     */
     public void drawFunctions()
     {
         Range rx = new Range(-10, 10);
         Range ry = new Range(-10, 10);
         drawFunctions(1000, 600, rx, ry, 200);
     }
+
+    /**
+     * @param json_file - the file with all the parameters for the GUI window.
+     * Constructor that gets json.
+     * A function that draws a collection of type function - complex function
+     */
     @Override
     public void drawFunctions(String json_file) {
         Gson gson = new Gson();
@@ -145,6 +178,7 @@ public class Functions_GUI implements functions {
         }
     }
 
+    //Functions we inherited from the collections class in java, the realization is to use its realization.
     @Override
     public int size() {
         return this.listOfComplexF.size();
@@ -210,18 +244,25 @@ public class Functions_GUI implements functions {
         this.listOfComplexF.clear();
     }
 
+    public function getcf(int i){
+        return this.listOfComplexF.get(i);
+    }
+
     public static void main(String[] args) throws IOException {
         Functions_GUI g1=new Functions_GUI();
+        Functions_GUI g=new Functions_GUI();
         g1.listOfComplexF.add(c.initFromString("x^2"));
         g1.listOfComplexF.add(c.initFromString("x^2+2x"));
         g1.listOfComplexF.add(c.initFromString("plus(x^2,2x)"));
         g1.listOfComplexF.add(c.initFromString("min(plus(x^2,2x),9x^7)"));
         g1.listOfComplexF.add(c.initFromString("max(min(plus(x^2,2x),9x^7),comp(5x,7x))"));
-//        String name="C:/Users/tom/Desktop/new.txt";
-//        g1.saveToFile(name);
+        String name="C:/Users/tom/Desktop/new.txt";
+        g1.saveToFile(name);
+        g.initFromFile("C:/Users/tom/Desktop/function_file.txt");
+        g.drawFunctions();
 //        Range r=new Range(-20,20);
 //        Range r1=new Range(-20,20);
-       // g1.drawFunctions(900,900,r,r1,200);
-        g1.drawFunctions("C:/Users/tom/Desktop/GUI.txt");
+//        g1.drawFunctions(900,900,r,r1,200);
+//        g1.drawFunctions("C:/Users/tom/Desktop/GUI.txt");
     }
 }
