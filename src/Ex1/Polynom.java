@@ -259,6 +259,7 @@ public class Polynom implements Polynom_able {
      * This is how all monomes are checked, if all are equal return true.
      * if p1 is monom or complex function the comparison is done by their comparative function
      */
+     //complexFunctipn
     @Override
     public boolean equals(Object p1) {
         if (p1 instanceof Polynom)
